@@ -11,16 +11,17 @@
     <script type="text/javascript" src="js/backbone.js"></script>
     <script type="text/javascript" src="js/presentation.js"></script>
     <script type="text/javascript">
-    $(document).ready(function () {
-      Backbone.history.start();
-    });
+      $(document).ready(function () {
+        var controller = new PresentationController();
+        var view = new NavigationView();
+        view.render();
+        Backbone.history.start();
+      });
     </script>
   </head>
   <body>
     <div id="header"></div>
     <div id="main-content"></div>
-    <div id="navigation">
-      
-    </div>
+    <div id="navigation"></div>
   </body>
 </html>
