@@ -1,22 +1,55 @@
 <script id="page-7" title="Backbone Model" type="text/haml-template">
+%pre(class="sh_javascript")
   window.Todo = Backbone.Model.extend({
-
-    EMPTY: "empty todo...",
-
-    initialize: function() {
-      if (!this.get("content")) {
-        this.set({"content": this.EMPTY});
-      }
-    },
-
-    toggle: function() {
-      this.save({done: !this.get("done")});
-    },
-
-    clear: function() {
-      this.destroy();
-      this.view.remove();
-    }
-
+   &nbsp;
+   EMPTY: "empty todo...",
+   &nbsp;
+   initialize: function() {
+     if (!this.get("content")) {
+       this.set({"content": this.EMPTY});
+     }
+   },
+   &nbsp;
+   toggle: function() {
+     this.save({done: !this.get("done")});
+   },
+   &nbsp;
+   clear: function() {
+     this.destroy();
+     this.view.remove();
+   }
+   &nbsp;
   });
+%script(type="text/javascript")
+  sh_highlightDocument();
+</script>
+
+<script id="page-7-1" title="Backbone Model" type="text/haml-template">
+%pre(class="sh_javascript")
+  ns.Upgrade = Backbone.Model.extend({
+    &nbsp;
+    listing : null,
+    &nbsp;
+    initialize: function (options) {
+      if (!options.listing) {
+        throw 'Listing is required';
+      }
+      this.listing = options.listing;
+    },
+    &nbsp;
+    url : function () {
+      return '/agentdesktop/listings/' + this.listing.get('id') + '/upgrades';
+    },
+    &nbsp;
+    toJSON : function () {
+      return {
+        duration : this.get('duration') || null,
+        price : this.get('price') || null,
+        name : this.get('name') || null,
+        description : this.get('description') || null
+      };
+    }
+  });
+%script(type="text/javascript")
+  sh_highlightDocument();
 </script>

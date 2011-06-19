@@ -37,29 +37,32 @@ window.haml = {
     return fn;
   },
 
-  // TEMPLATELINE -> WS* [ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS] (EOL|EOF)
+  // TEMPLATELINE -> WS* ([ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS])|(!CONTENTS) (EOL|EOF)
   templateLine: function (tokeniser, elementStack, outputBuffer) {
     var indent = haml.whitespace(tokeniser);
-    var ident = haml.element(tokeniser);
-    var id = haml.idSelector(tokeniser);
-    var classes = haml.classSelector(tokeniser);
-    var attrList = haml.attributeList(tokeniser);
+    var ident = '';
+    if (!tokeniser.token.asis) {
+      ident = haml.element(tokeniser);
+      var id = haml.idSelector(tokeniser);
+      var classes = haml.classSelector(tokeniser);
+      var attrList = haml.attributeList(tokeniser);
 
-    var currentParsePoint = tokeniser.currentParsePoint();
-    var attributesHash = haml.attributeHash(tokeniser);
+      var currentParsePoint = tokeniser.currentParsePoint();
+      var attributesHash = haml.attributeHash(tokeniser);
 
-    var selfClosingTag = false;
-    if (tokeniser.token.slash) {
-      selfClosingTag = true;
-      tokeniser.getNextToken();
-    }
+      var selfClosingTag = false;
+      if (tokeniser.token.slash) {
+        selfClosingTag = true;
+        tokeniser.getNextToken();
+      }
 
-    outputBuffer.append(haml.closeElements(indent, elementStack));
-    if (ident.length > 0 || id.length > 0 || classes.length > 0) {
-      haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
-        outputBuffer, selfClosingTag);
-    } else if (!tokeniser.token.eol && !tokeniser.token.ws) {
-      tokeniser.pushBackToken();
+      outputBuffer.append(haml.closeElements(indent, elementStack));
+      if (ident.length > 0 || id.length > 0 || classes.length > 0) {
+        haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
+          outputBuffer, selfClosingTag);
+      } else if (!tokeniser.token.eol && !tokeniser.token.ws) {
+        tokeniser.pushBackToken();
+      }
     }
 
     var contents = tokeniser.skipToEOLorEOF();
@@ -472,6 +475,14 @@ window.haml = {
         if (!this.token) {
           if (this.buffer && this.buffer.charAt(0) === '/') {
             this.token = { slash: true, token: 'SLASH', tokenString: this.buffer.charAt(0),
+              matched: this.buffer.charAt(0) };
+            this.advanceCharsInBuffer(1);
+          }
+        }
+
+        if (!this.token) {
+          if (this.buffer && this.buffer.charAt(0) === '!') {
+            this.token = { asis: true, token: 'ASIS', tokenString: this.buffer.charAt(0),
               matched: this.buffer.charAt(0) };
             this.advanceCharsInBuffer(1);
           }
