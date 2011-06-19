@@ -69,6 +69,13 @@ window.NavigationView = Backbone.View.extend({
       this.$("#back-button").button("enable");
       this.$("#next-button").button("enable");
     }
+
+    this.updateProgress();
+  },
+
+  updateProgress: function () {
+    var progress = 100 * (this.page - 1) / (this.pages - 1);
+    this.$("#progress-bar").progressbar('value', progress);
   },
 
   initPages: function (pages) {
