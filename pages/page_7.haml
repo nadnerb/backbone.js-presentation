@@ -1,0 +1,22 @@
+<script id="page-7" title="Backbone Model" type="text/haml-template">
+  window.Todo = Backbone.Model.extend({
+
+    EMPTY: "empty todo...",
+
+    initialize: function() {
+      if (!this.get("content")) {
+        this.set({"content": this.EMPTY});
+      }
+    },
+
+    toggle: function() {
+      this.save({done: !this.get("done")});
+    },
+
+    clear: function() {
+      this.destroy();
+      this.view.remove();
+    }
+
+  });
+</script>
