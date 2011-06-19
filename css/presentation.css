@@ -33,10 +33,6 @@ body {
     width: 777px;
 }
 
-#progress-bar {
-
-}
-
 #back-button {
     float: left;
 }
@@ -45,9 +41,22 @@ body {
     float: right;
 }
 
-#status {
-    display: inline-block;
-    width: 100px;
+#timer {
+    width: 150px;
+    float: right;
+    height: 100%;
+    line-height: 100px;
+    font-size: xx-large;
+    text-align: center;
+}
+
+#title {
+    text-align: center;
+    font-size: xx-large;
+    float: left;
+    width: 862px;
+    height: 100%;
+    line-height: 100px;
 }
 
 .spacer {
@@ -56,11 +65,6 @@ body {
 
 .big-spacer {
     height: 50px;
-}
-
-#title {
-    text-align: center;
-    font-size: xx-large;
 }
 
 #main-content {

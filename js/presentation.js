@@ -15,6 +15,11 @@ window.PresentationController = Backbone.Controller.extend({
     this.loadPages();
   },
 
+  start: function () {
+    this.started = new Date();
+    document.location.hash = 'page/1';
+  },
+
   page: function (pageIndex) {
     this.page = parseInt(pageIndex, 10);
     this.headerView.updatePage(this.page);
@@ -51,6 +56,12 @@ window.PresentationController = Backbone.Controller.extend({
   next: function () {
     var nextPage = this.page + 1;
     document.location.hash = 'page/' + nextPage;
+  },
+
+  timer: function() {
+    if (this.started) {
+      this.headerView.updateTime(this.started);
+    }
   }
 
 });
@@ -130,6 +141,26 @@ window.HeaderView = Backbone.View.extend({
   updatePage: function (page) {
     this.page = page;
     this.render();
+  },
+
+  updateTime: function (startTime) {
+    var diffTime = new Date().getTime() - startTime.getTime();
+    this.$('#timer').text(this.formatDuration(diffTime));
+  },
+
+  formatDuration: function (diffTime) {
+    var totalSeconds = Math.floor(diffTime / 1000);
+    var minutes = Math.floor(totalSeconds / 60);
+    var minStr = minutes.toString();
+    if (minStr.length === 1) {
+      minStr = '0' + minStr;
+    }
+    var seconds = Math.floor(totalSeconds % 60);
+    var secStr = seconds.toString();
+    if (secStr.length === 1) {
+      secStr = '0' + secStr;
+    }
+    return minStr + ':' + secStr;
   }
 
 });

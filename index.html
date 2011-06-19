@@ -15,10 +15,11 @@
     <script type="text/javascript" src="js/haml.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
-        var controller = new PresentationController();
+        window.controller = new PresentationController();
+        setInterval('window.controller.timer()', 1000);
         Backbone.history.start();
         $('#start').button().click(function () {
-            document.location.hash = 'page/1';
+            controller.start();
         });
       });
     </script>
@@ -26,9 +27,8 @@
   <body>
     <div id="main" class="ui-corner-all">
         <div id="header" class="ui-corner-all">
-            <div id="status"></div>
-            <div id="title">Backbone.js - Model/View/Controller framework in Javascript</div>
-            <div id="timer"></div>
+            <div id="title">Backbone.js - MVC framework in Javascript</div>
+            <div id="timer">00:00</div>
         </div>
         <div id="main-content">
             <div id="start-contents" class="content-panel ui-corner-all">
