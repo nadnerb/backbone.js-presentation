@@ -1,7 +1,12 @@
 window.haml = {
 
   compileHaml: function (templateId) {
+    if (haml.cache && haml.cache[templateId]) {
+      return haml.cache[templateId];
+    }
 
+    var start = new Date();
+    
     var tokeniser = new haml.Tokeniser(templateId);
     var outputBuffer = new haml.Buffer();
     var elementStack = [];
@@ -20,7 +25,16 @@ window.haml = {
 
     result += '    return html;\n}\n';
 
-    return new Function('context', result);
+    var fn = new Function('context', result);
+
+    console.log('Compile ' + templateId + ' took ' + (new Date().getTime() - start.getTime()));
+
+    if (!haml.cache) {
+      haml.cache = {};
+    }
+    haml.cache[templateId] = fn;
+
+    return fn;
   },
 
   // TEMPLATELINE -> WS* [ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS] (EOL|EOF)
