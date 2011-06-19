@@ -115,14 +115,46 @@ window.ContentsView = Backbone.View.extend({
 
   el: '#main-content',
 
+  initialize: function () {
+    _(this).bindAll('render', 'updatePage', 'hideComplete');
+  },
+
+  pageId: function (page) {
+    if (page) {
+      return '#page-' + page + '-content';
+    } else {
+      return '#page-' + this.page + '-content';
+    }
+  },
+
   render: function() {
-    $(this.el).html('<div id="page-' + this.page + '-content"></div>');
-    this.$('#page-' + this.page + '-content').html(haml.compileHaml('page-' + this.page).call(null, this));
+    if (this.$(this.pageId()).length === 0) {
+      $(this.el).append('<div id="' + this.pageId().substring(1) + '" style="display: none;"></div>');
+    }
+    var html = haml.compileHaml('page-' + this.page).call(null, {});
+    this.$(this.pageId()).html(html);
   },
 
   updatePage: function (page) {
+    this.lastPage = this.page;
     this.page = page;
     this.render();
+    var self = this;
+    if (!this.lastPage) {
+      this.$('#start-contents').hide('slide', { direction: 'left' }, 'fast', this.hideComplete);
+    } else if (this.lastPage < page) {
+      this.$(this.pageId(this.lastPage)).hide('slide', { direction: 'left' }, 'fast', this.hideComplete);
+    } else {
+      this.$(this.pageId(this.lastPage)).hide('slide', { direction: 'right' }, 'fast', this.hideComplete);
+    }
+  },
+
+  hideComplete: function () {
+    if (this.lastPage < this.page) {
+      this.$(this.pageId()).show('slide', { direction: 'right' }, 'fast');
+    } else {
+      this.$(this.pageId()).show('slide', { direction: 'left' }, 'fast');
+    }
   }
 
 });
