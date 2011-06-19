@@ -50,8 +50,12 @@ body {
     width: 100px;
 }
 
-#spacer {
+.spacer {
     height: 10px;
+}
+
+.big-spacer {
+    height: 50px;
 }
 
 #title {
@@ -80,7 +84,10 @@ body {
 .content-panel {
     border: 1px solid black;
     height: 95%;
-    margin: 5px;
     padding:  5px;
     background-color: #d3d3d3;
+}
+
+#page-2-content {
+    vertical-align: middle;
 }

@@ -162,8 +162,8 @@ window.haml = {
         currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
         haml.escapeJs(currentParsePoint.currentLine) + '");\n');
     } else {
-      outputBuffer.append(haml.escapeJs(haml.generateElementAttributes(null, id, classes, attributeList, null,
-        currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine)));
+      outputBuffer.append(haml.generateElementAttributes(null, id, classes, attributeList, null,
+        currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine));
     }
     if (selfClosingTag) {
       outputBuffer.append("/>\\n");
@@ -573,7 +573,7 @@ window.haml = {
     };
 
     this.flush = function () {
-      this.outputBuffer += '    html += "' + this.buffer.replace(/"/g, '\\"') + '";\n';
+      this.outputBuffer += '    html += "' + haml.escapeJs(this.buffer) + '";\n';
       this.buffer = '';
     };
 
