@@ -23,17 +23,24 @@ body {
     border-bottom: 1px solid black;
 }
 
-#progress-bar {
-    display: inline-block;
+#progress {
+    float: left;
+    left: 5px;
+    position: relative;
+    top: 2px;
     width: 777px;
 }
 
-#back-button {
+#progress-bar {
 
 }
 
+#back-button {
+    float: left;
+}
+
 #next-button {
-    
+    float: right;
 }
 
 #status {
