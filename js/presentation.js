@@ -99,11 +99,12 @@ window.HeaderView = Backbone.View.extend({
   el: '#header',
 
   render: function() {
-    
+    this.$('#title').text($('#page-' + this.page).attr('title'));
   },
 
   updatePage: function (page) {
-    
+    this.page = page;
+    this.render();
   }
 
 });

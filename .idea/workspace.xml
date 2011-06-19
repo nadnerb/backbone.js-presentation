@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/presentation.js" afterPath="$PROJECT_DIR$/js/presentation.js" />
     </list>
     <ignored path="backbone.iws" />
@@ -73,7 +74,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="9" selection-start="1163" selection-end="1163" vertical-scroll-proportion="-13.125">
+            <state line="40" column="29" selection-start="1794" selection-end="1794" vertical-scroll-proportion="-20.0">
               <folding />
             </state>
           </provider>
@@ -91,7 +92,7 @@
       <file leaf-file-name="presentation.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/presentation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="58" selection-start="1809" selection-end="1809" vertical-scroll-proportion="0.7031746">
+            <state line="101" column="61" selection-start="2312" selection-end="2312" vertical-scroll-proportion="0.6666667">
               <folding />
             </state>
           </provider>
@@ -552,14 +553,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="9" selection-start="1163" selection-end="1163" vertical-scroll-proportion="-13.125">
+        <state line="40" column="29" selection-start="1794" selection-end="1794" vertical-scroll-proportion="-20.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/presentation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="58" selection-start="1809" selection-end="1809" vertical-scroll-proportion="0.7031746">
+        <state line="101" column="61" selection-start="2312" selection-end="2312" vertical-scroll-proportion="0.6666667">
           <folding />
         </state>
       </provider>
