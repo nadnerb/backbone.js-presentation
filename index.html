@@ -14,8 +14,6 @@
     <script type="text/javascript" src="js/presentation.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
-        var view = new NavigationView();
-        view.render();
         var controller = new PresentationController();
         Backbone.history.start();
         $('#start').button();
@@ -45,5 +43,6 @@
         </div>
         <div id="spacer"></div>
     </div>
+    <div id="page-content"></div>
   </body>
 </html>

@@ -6,11 +6,33 @@ window.PresentationController = Backbone.Controller.extend({
   },
 
   initialize: function () {
-    
+    this.headerView = new HeaderView();
+    this.navigationView = new NavigationView();
+    this.navigationView.render();
+    this.loadPages();
   },
 
   page: function (pageIndex) {
-    pageIndex = parseInt(pageIndex, 10);
+    var page = parseInt(pageIndex, 10);
+  },
+
+  loadPages: function () {
+    var page = 1;
+    var lastPage = false;
+    while (!lastPage) {
+      $.ajax({
+        url: "pages/page_" + page + ".haml",
+        dataType: 'html',
+        async: false,
+        success: function(data, textStatus, jqXHR) {
+          $('#page-content').append(data);
+          page++;
+        },
+        error: function () {
+          lastPage = true;
+        }
+      });
+    }
   }
 
 });
