@@ -1,0 +1,38 @@
+body {
+    background-color: #778899;
+    min-width: 1024px;
+}
+
+#main {
+    width: 1024px;
+    height: 100%;
+    border: 1px solid #000000;
+    margin: 0 auto;
+	overflow: hidden;
+}
+
+#navigation {
+    height: 45px;
+}
+
+#progress-bar {
+    display: inline-block;
+    width: 777px;
+}
+
+#back-button {
+
+}
+
+#next-button {
+    
+}
+
+#status {
+    display: inline-block;
+    width: 100px;
+}
+
+#spacer {
+    height: 10px;
+}

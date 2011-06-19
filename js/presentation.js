@@ -22,6 +22,9 @@ window.NavigationView = Backbone.View.extend({
   render: function() {
     this.$("#back-button").button();
     this.$("#next-button").button();
+    this.$("#progress-bar").progressbar();
+
+    this.$('#status').progressbar();
   }
 
 });
