@@ -16,7 +16,9 @@
       $(document).ready(function () {
         var controller = new PresentationController();
         Backbone.history.start();
-        $('#start').button();
+        $('#start').button().click(function () {
+            document.location.hash = 'page/1';
+        });
       });
     </script>
   </head>
