@@ -65,12 +65,16 @@ body {
     padding:  5px;
 }
 
-#main-content p, #main-content cite {
+#main-content {
     font-size: x-large;
 }
 
 #main-content em {
     font-weight: bolder;
+}
+
+#main-content ul {
+    text-align: left;
 }
 
 .content-panel {
