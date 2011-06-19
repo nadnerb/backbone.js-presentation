@@ -1,23 +1,25 @@
 window.PresentationController = Backbone.Controller.extend({
 
   routes: {
-    "/": "start",
     "page/:pageIndex" : "page"
   },
 
   initialize: function () {
     this.headerView = new HeaderView();
     this.navigationView = new NavigationView();
+    this.navigationView.bind('next', this.next);
+    this.navigationView.bind('back', this.back);
     this.contentsView = new ContentsView();
+    this.contentsView.bind('next', this.next);
     this.navigationView.render();
     this.loadPages();
   },
 
   page: function (pageIndex) {
-    var page = parseInt(pageIndex, 10);
-    this.headerView.updatePage(page);
-    this.navigationView.updatePage(page);
-    this.contentsView.updatePage(page);
+    this.page = parseInt(pageIndex, 10);
+    this.headerView.updatePage(this.page);
+    this.navigationView.updatePage(this.page);
+    this.contentsView.updatePage(this.page);
   },
 
   loadPages: function () {
@@ -39,6 +41,16 @@ window.PresentationController = Backbone.Controller.extend({
     }
 
     this.navigationView.initPages(page - 1);
+  },
+
+  back: function () {
+    var nextPage = this.page - 1;
+    document.location.hash = 'page/' + nextPage;
+  },
+
+  next: function () {
+    var nextPage = this.page + 1;
+    document.location.hash = 'page/' + nextPage;
   }
 
 });
@@ -90,20 +102,18 @@ window.NavigationView = Backbone.View.extend({
   },
 
   back: function () {
-    var nextPage = this.page - 1;
-    document.location.hash = 'page/' + nextPage;
+    this.trigger('back');
   },
 
   next: function () {
-    var nextPage = this.page + 1;
-    document.location.hash = 'page/' + nextPage;
+    this.trigger('next');
   },
 
   keypress: function (event) {
     if (event.keyCode == $.ui.keyCode.LEFT && this.page > 1) {
-      this.back();
+     this.trigger('back');
     } else if (event.keyCode == $.ui.keyCode.RIGHT && this.page < this.pages) {
-      this.next();
+      this.trigger('next');
     }
   }
 
@@ -129,7 +139,8 @@ window.ContentsView = Backbone.View.extend({
   el: '#main-content',
 
   initialize: function () {
-    _(this).bindAll('render', 'updatePage', 'hideComplete');
+    _(this).bindAll('render', 'updatePage', 'hideComplete', 'keypress');
+    $(document).keypress(this.keypress);
   },
 
   pageId: function (page) {
@@ -145,14 +156,18 @@ window.ContentsView = Backbone.View.extend({
       $(this.el).append('<div id="' + this.pageId().substring(1) + '" style="display: none;" class="content-panel ui-corner-all"></div>');
     }
     var html = haml.compileHaml('page-' + this.page).call(null, {});
+    if (this.sequence) {
+      html = haml.compileHaml('page-' + this.page + '-' + this.sequence).call(null, {});
+    }
     this.$(this.pageId()).html(html);
   },
 
   updatePage: function (page) {
     this.lastPage = this.page;
     this.page = page;
+    this.sequence = null;
     this.render();
-    var self = this;
+    
     if (!this.lastPage) {
       this.$('#start-contents').hide('slide', { direction: 'left' }, 'fast', this.hideComplete);
     } else if (this.lastPage < page) {
@@ -168,6 +183,29 @@ window.ContentsView = Backbone.View.extend({
     } else {
       this.$(this.pageId()).show('slide', { direction: 'left' }, 'fast');
     }
+  },
+
+  keypress: function (event) {
+    if (event.keyCode == $.ui.keyCode.DOWN) {
+      if(this.hasMoreContents()) {
+        if (!this.sequence) {
+          this.sequence = 1;
+        } else {
+          this.sequence++;
+        }
+        this.render();
+      } else {
+        this.trigger('next');
+      }
+    }
+  },
+
+  hasMoreContents: function () {
+    var nextSequence = 1;
+    if (this.sequence) {
+      nextSequence = this.sequence + 1;
+    }
+    return $('#page-' + this.page + '-' + nextSequence).length > 0;
   }
 
 });

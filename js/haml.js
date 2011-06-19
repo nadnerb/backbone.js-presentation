@@ -573,7 +573,7 @@ window.haml = {
     };
 
     this.flush = function () {
-      this.outputBuffer += '    html += "' + this.buffer + '";\n';
+      this.outputBuffer += '    html += "' + this.buffer.replace(/"/g, '\\"') + '";\n';
       this.buffer = '';
     };
 

@@ -65,13 +65,18 @@ body {
     padding:  5px;
 }
 
-#main-content p {
+#main-content p, #main-content cite {
     font-size: x-large;
+}
+
+#main-content em {
+    font-weight: bolder;
 }
 
 .content-panel {
     border: 1px solid black;
     height: 95%;
     margin: 5px;
+    padding:  5px;
     background-color: #d3d3d3;
 }
