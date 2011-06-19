@@ -5,6 +5,7 @@ window.PresentationController = Backbone.Controller.extend({
   },
 
   initialize: function () {
+    _(this).bindAll("next", "back");
     this.headerView = new HeaderView();
     this.navigationView = new NavigationView();
     this.navigationView.bind('next', this.next);
@@ -45,17 +46,22 @@ window.PresentationController = Backbone.Controller.extend({
       });
     }
 
-    this.navigationView.initPages(page - 1);
+    this.totalPages = page - 1;
+    this.navigationView.initPages(this.totalPages);
   },
 
   back: function () {
-    var nextPage = this.page - 1;
-    document.location.hash = 'page/' + nextPage;
+    if (this.page > 1) {
+      var nextPage = this.page - 1;
+      document.location.hash = 'page/' + nextPage;
+    }
   },
 
   next: function () {
-    var nextPage = this.page + 1;
-    document.location.hash = 'page/' + nextPage;
+    if (this.page < this.totalPages) {
+      var nextPage = this.page + 1;
+      document.location.hash = 'page/' + nextPage;
+    }
   },
 
   timer: function() {
