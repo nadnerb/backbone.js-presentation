@@ -142,7 +142,7 @@ window.ContentsView = Backbone.View.extend({
 
   render: function() {
     if (this.$(this.pageId()).length === 0) {
-      $(this.el).append('<div id="' + this.pageId().substring(1) + '" style="display: none;"></div>');
+      $(this.el).append('<div id="' + this.pageId().substring(1) + '" style="display: none;" class="content-panel ui-corner-all"></div>');
     }
     var html = haml.compileHaml('page-' + this.page).call(null, {});
     this.$(this.pageId()).html(html);
@@ -163,7 +163,7 @@ window.ContentsView = Backbone.View.extend({
   },
 
   hideComplete: function () {
-    if (this.lastPage < this.page) {
+    if (this.lastPage < this.page || !this.lastPage) {
       this.$(this.pageId()).show('slide', { direction: 'right' }, 'fast');
     } else {
       this.$(this.pageId()).show('slide', { direction: 'left' }, 'fast');
