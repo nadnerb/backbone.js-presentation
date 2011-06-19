@@ -1,6 +1,7 @@
 window.PresentationController = Backbone.Controller.extend({
 
   routes: {
+    "/": "start",
     "page/:pageIndex" : "page"
   },
 
@@ -19,7 +20,8 @@ window.NavigationView = Backbone.View.extend({
   el: '#navigation',
 
   render: function() {
-    $(this.el).html('<span>TExt</span>');
+    this.$("#back-button").button();
+    this.$("#next-button").button();
   }
 
 });

@@ -5,6 +5,7 @@
     <title>Backbone Presentation</title>
     <meta name="GENERATOR" content="Quanta Plus" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.13.custom.css"/>
     <script type="text/javascript" src="js/jquery-1.6.1.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
     <script type="text/javascript" src="js/underscore.js"></script>
@@ -20,8 +21,16 @@
     </script>
   </head>
   <body>
-    <div id="header"></div>
+    <div id="header">
+        <div id="status"/>
+        <div id="title"/>
+        <div id="timer"/>
+    </div>
     <div id="main-content"></div>
-    <div id="navigation"></div>
+    <div id="navigation">
+        <div id="back"><button id="back-button">Back</button></div>
+        <div id="progress"/>
+        <div id="next"><button id="next-button">Next</button></div>
+    </div>
   </body>
 </html>
