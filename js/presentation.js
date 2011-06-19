@@ -20,11 +20,19 @@ window.NavigationView = Backbone.View.extend({
   el: '#navigation',
 
   render: function() {
-    this.$("#back-button").button();
-    this.$("#next-button").button();
+    this.$("#back-button").button({ disabled: true });
+    this.$("#next-button").button({ disabled: true });
     this.$("#progress-bar").progressbar();
+  }
 
-    this.$('#status').progressbar();
+});
+
+window.HeaderView = Backbone.View.extend({
+
+  el: '#header',
+
+  render: function() {
+    
   }
 
 });

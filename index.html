@@ -14,10 +14,11 @@
     <script type="text/javascript" src="js/presentation.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
-        var controller = new PresentationController();
         var view = new NavigationView();
         view.render();
+        var controller = new PresentationController();
         Backbone.history.start();
+        $('#start').button();
       });
     </script>
   </head>
@@ -30,7 +31,13 @@
             </div>
             <div id="timer"></div>
         </div>
-        <div id="main-content"></div>
+        <div id="main-content">
+            <div style="height: 100px"></div>
+            <img src="backbone.png" alt="Backbone.js"/>
+            <div>
+                <button id="start">Start</button>
+            </div>
+        </div>
         <div id="navigation">
             <button id="back-button"><< Back</button>
             <div id="progress-bar"></div>

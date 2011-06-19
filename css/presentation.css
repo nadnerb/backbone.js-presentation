@@ -1,18 +1,26 @@
 body {
-    background-color: #778899;
+    background-color: #708090;
     min-width: 1024px;
+    min-height: 768px;
 }
 
 #main {
     width: 1024px;
-    height: 100%;
-    border: 1px solid #000000;
+    height: 768px;
+    border: 1px solid black;
     margin: 0 auto;
 	overflow: hidden;
+    padding: 5px;
+    background-color: #778899;
 }
 
 #navigation {
     height: 45px;
+}
+
+#header {
+    height: 106px;
+    border-bottom: 1px solid black;
 }
 
 #progress-bar {
@@ -35,4 +43,19 @@ body {
 
 #spacer {
     height: 10px;
+}
+
+#title {
+    text-align: center;
+    font-size: x-large;
+}
+
+#main-content {
+    text-align: center;
+    height: 598px;
+    padding:  5px;
+}
+
+#main-content p {
+    font-size: x-large;
 }
