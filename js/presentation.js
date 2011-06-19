@@ -8,6 +8,7 @@ window.PresentationController = Backbone.Controller.extend({
   initialize: function () {
     this.headerView = new HeaderView();
     this.navigationView = new NavigationView();
+    this.contentsView = new ContentsView();
     this.navigationView.render();
     this.loadPages();
   },
@@ -16,6 +17,7 @@ window.PresentationController = Backbone.Controller.extend({
     var page = parseInt(pageIndex, 10);
     this.headerView.updatePage(page);
     this.navigationView.updatePage(page);
+    this.contentsView.updatePage(page);
   },
 
   loadPages: function () {
@@ -100,6 +102,22 @@ window.HeaderView = Backbone.View.extend({
 
   render: function() {
     this.$('#title').text($('#page-' + this.page).attr('title'));
+  },
+
+  updatePage: function (page) {
+    this.page = page;
+    this.render();
+  }
+
+});
+
+window.ContentsView = Backbone.View.extend({
+
+  el: '#main-content',
+
+  render: function() {
+    $(this.el).html('<div id="page-' + this.page + '-content"></div>');
+    this.$('#page-' + this.page + '-content').html(haml.compileHaml('page-' + this.page).call(null, this));
   },
 
   updatePage: function (page) {

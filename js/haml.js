@@ -1,11 +1,9 @@
-/*jslint plusplus: false, evil: true, regexp: false */
+window.haml = {
 
-ns('REA.helpers.haml', function (ns) {
+  compileHaml: function (templateId) {
 
-  ns.compileHaml = function (templateId) {
-
-    var tokeniser = new ns.Tokeniser(templateId);
-    var outputBuffer = new ns.Buffer();
+    var tokeniser = new haml.Tokeniser(templateId);
+    var outputBuffer = new haml.Buffer();
     var elementStack = [];
 
     var result = '  with(context) {\n    var html = "";\n';
@@ -13,28 +11,28 @@ ns('REA.helpers.haml', function (ns) {
     // HAML -> TEMPLATELINE* EOF
     tokeniser.getNextToken();
     while (!tokeniser.token.eof) {
-      ns.templateLine(tokeniser, elementStack, outputBuffer);
+      haml.templateLine(tokeniser, elementStack, outputBuffer);
     }
 
-    outputBuffer.append(ns.closeElements(0, elementStack));
+    outputBuffer.append(haml.closeElements(0, elementStack));
     outputBuffer.flush();
     result += outputBuffer.output();
 
     result += '    return html;\n}\n';
 
     return new Function('context', result);
-  };
+  },
 
   // TEMPLATELINE -> WS* [ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS] (EOL|EOF)
-  ns.templateLine = function (tokeniser, elementStack, outputBuffer) {
-    var indent = ns.whitespace(tokeniser);
-    var ident = ns.element(tokeniser);
-    var id = ns.idSelector(tokeniser);
-    var classes = ns.classSelector(tokeniser);
-    var attrList = ns.attributeList(tokeniser);
+  templateLine: function (tokeniser, elementStack, outputBuffer) {
+    var indent = haml.whitespace(tokeniser);
+    var ident = haml.element(tokeniser);
+    var id = haml.idSelector(tokeniser);
+    var classes = haml.classSelector(tokeniser);
+    var attrList = haml.attributeList(tokeniser);
 
     var currentParsePoint = tokeniser.currentParsePoint();
-    var attributesHash = ns.attributeHash(tokeniser);
+    var attributesHash = haml.attributeHash(tokeniser);
 
     var selfClosingTag = false;
     if (tokeniser.token.slash) {
@@ -42,16 +40,16 @@ ns('REA.helpers.haml', function (ns) {
       tokeniser.getNextToken();
     }
 
-    outputBuffer.append(ns.closeElements(indent, elementStack));
+    outputBuffer.append(haml.closeElements(indent, elementStack));
     if (ident.length > 0 || id.length > 0 || classes.length > 0) {
-      ns.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
+      haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
         outputBuffer, selfClosingTag);
     } else if (!tokeniser.token.eol && !tokeniser.token.ws) {
       tokeniser.pushBackToken();
     }
 
     var contents = tokeniser.skipToEOLorEOF();
-    ns.eolOrEof(tokeniser);
+    haml.eolOrEof(tokeniser);
 
     if (!selfClosingTag && contents.length > 0) {
       if (contents.match(/^\\%/)) {
@@ -61,26 +59,26 @@ ns('REA.helpers.haml', function (ns) {
       if (ident.length > 0) {
         i += 1;
       }
-      outputBuffer.append(ns.indentText(i) + contents + '\\n');
+      outputBuffer.append(haml.indentText(i) + contents + '\\n');
     }
-  };
+  },
 
-  ns.attributeHash = function (tokeniser) {
+  attributeHash: function (tokeniser) {
     var attr = '';
     if (tokeniser.token.attributeHash) {
       attr = tokeniser.token.tokenString;
       tokeniser.getNextToken();
     }
     return attr;
-  };
+  },
 
   // ATTRIBUTES -> ( ATTRIBUTE* )
-  ns.attributeList = function (tokeniser) {
+  attributeList: function (tokeniser) {
     var attrList = {};
     if (tokeniser.token.openBracket) {
       tokeniser.getNextToken();
       while (!tokeniser.token.closeBracket) {
-        var attr = ns.attribute(tokeniser);
+        var attr = haml.attribute(tokeniser);
         if (attr) {
           attrList[attr.name] = attr.value;
         } else {
@@ -90,21 +88,21 @@ ns('REA.helpers.haml', function (ns) {
       tokeniser.getNextToken();
     }
     return attrList;
-  };
+  },
 
   // ATTRIBUTE -> IDENTIFIER WS* = WS* STRING
-  ns.attribute = function (tokeniser) {
+  attribute: function (tokeniser) {
     var attr = null;
 
     if (tokeniser.token.identifier) {
       var name = tokeniser.token.tokenString;
       tokeniser.getNextToken();
-      ns.whitespace(tokeniser);
+      haml.whitespace(tokeniser);
       if (!tokeniser.token.equal) {
         throw tokeniser.parseError("Expected '=' after attribute name");
       }
       tokeniser.getNextToken();
-      ns.whitespace(tokeniser);
+      haml.whitespace(tokeniser);
       if (!tokeniser.token.string && !tokeniser.token.identifier) {
         throw tokeniser.parseError("Expected a quoted string or an identifier for the attribute value");
       }
@@ -113,44 +111,44 @@ ns('REA.helpers.haml', function (ns) {
     }
 
     return attr;
-  };
+  },
 
-  ns.closeElement = function (indent, elementStack) {
+  closeElement: function (indent, elementStack) {
     var html = '';
     if (elementStack[indent]) {
-      html += ns.indentText(indent) + '</' + elementStack[indent].tag + '>\\n';
+      html += haml.indentText(indent) + '</' + elementStack[indent].tag + '>\\n';
       elementStack[indent] = null;
     }
     return html;
-  };
+  },
 
-  ns.closeElements = function (indent, elementStack) {
+  closeElements: function (indent, elementStack) {
     var result = '';
     for (var i = elementStack.length - 1; i >= indent; (i--)) {
-      result += ns.closeElement(i, elementStack);
+      result += haml.closeElement(i, elementStack);
     }
     return result;
-  };
+  },
 
-  ns.openElement = function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash,
+  openElement: function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash,
                              elementStack, outputBuffer, selfClosingTag) {
     var element = ident;
     if (element.length === 0) {
       element = 'div';
     }
 
-    outputBuffer.append(ns.indentText(indent) + '<' + element);
+    outputBuffer.append(haml.indentText(indent) + '<' + element);
     if (attributeHash.length > 0) {
       outputBuffer.flush();
       outputBuffer.appendToOutputBuffer('    html += REA.helpers.haml.generateElementAttributes(context, "' +
         id + '", ["' +
         classes.join('","') + '"], ' +
         JSON.stringify(attributeList) + ', ' +
-        (attributeHash.length > 0 ? '"' + ns.escapeJs(attributeHash) + '"' : 'null') + ', ' +
+        (attributeHash.length > 0 ? '"' + haml.escapeJs(attributeHash) + '"' : 'null') + ', ' +
         currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
-        ns.escapeJs(currentParsePoint.currentLine) + '");\n');
+        haml.escapeJs(currentParsePoint.currentLine) + '");\n');
     } else {
-      outputBuffer.append(ns.escapeJs(ns.generateElementAttributes(null, id, classes, attributeList, null,
+      outputBuffer.append(haml.escapeJs(haml.generateElementAttributes(null, id, classes, attributeList, null,
         currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine)));
     }
     if (selfClosingTag) {
@@ -159,13 +157,13 @@ ns('REA.helpers.haml', function (ns) {
       outputBuffer.append(">\\n");
       elementStack[indent] = { tag: element };
     }
-  };
+  },
 
-  ns.escapeJs = function (jsStr) {
+  escapeJs: function (jsStr) {
     return jsStr.replace(/"/g, '\\"');
-  };
+  },
 
-  ns.combineAttributes = function (attributes, attrName, attrValue) {
+  combineAttributes: function (attributes, attrName, attrValue) {
     if (attrValue) {
       if (attrName === 'id' && attrValue.toString().length > 0) {
         if (attributes && attributes.id instanceof Array) {
@@ -200,22 +198,22 @@ ns('REA.helpers.haml', function (ns) {
       }
     }
     return attributes;
-  };
+  },
 
-  ns.generateElementAttributes = function (context, id, classes, attrList, attrHash, lineNumber, characterNumber,
+  generateElementAttributes: function (context, id, classes, attrList, attrHash, lineNumber, characterNumber,
                                            currentLine) {
     var attributes = {};
 
-    attributes = ns.combineAttributes(attributes, 'id', id);
+    attributes = haml.combineAttributes(attributes, 'id', id);
     if (classes.length > 0 && classes[0].length > 0) {
-      attributes = ns.combineAttributes(attributes, 'class', classes);
+      attributes = haml.combineAttributes(attributes, 'class', classes);
     }
 
     var attr;
     if (attrList) {
       for (attr in attrList) {
         if (attrList.hasOwnProperty(attr)) {
-          attributes = ns.combineAttributes(attributes, attr, attrList[attr]);
+          attributes = haml.combineAttributes(attributes, attr, attrList[attr]);
         }
       }
     }
@@ -227,12 +225,12 @@ ns('REA.helpers.haml', function (ns) {
         if (hash) {
           for (attr in hash) {
             if (hash.hasOwnProperty(attr)) {
-              attributes = ns.combineAttributes(attributes, attr, hash[attr]);
+              attributes = haml.combineAttributes(attributes, attr, hash[attr]);
             }
           }
         }
       } catch (e) {
-        throw ns.templateError(lineNumber, characterNumber, currentLine, "Error evaluating attribute hash - " + e);
+        throw haml.templateError(lineNumber, characterNumber, currentLine, "Error evaluating attribute hash - " + e);
       }
     }
 
@@ -245,68 +243,68 @@ ns('REA.helpers.haml', function (ns) {
           } else if (attr === 'class' && attributes[attr] instanceof Array) {
             html += ' ' + attr + '="' + attributes[attr].join(' ') + '"';
           } else {
-            html += ' ' + attr + '="' + ns.attrValue(attr, attributes[attr]) + '"';
+            html += ' ' + attr + '="' + haml.attrValue(attr, attributes[attr]) + '"';
           }
         }
       }
     }
     return html;
-  };
+  },
 
-  ns.attrValue = function (attr, value) {
+  attrValue: function (attr, value) {
     if (jQuery.inArray(attr, ['selected', 'checked', 'disabled']) >= 0) {
       return attr;
     } else {
       return value;
     }
-  };
+  },
 
-  ns.indentText = function (indent) {
+  indentText: function (indent) {
     var text = '';
     for (var i = 0; i < indent; i++) {
       text += '  ';
     }
     return text;
-  };
+  },
 
-  ns.whitespace = function (tokeniser) {
+  whitespace: function (tokeniser) {
     var indent = 0;
     if (tokeniser.token.ws) {
       indent = tokeniser.token.tokenString.length / 2;
       tokeniser.getNextToken();
     }
     return indent;
-  };
+  },
 
-  ns.element = function (tokeniser) {
+  element: function (tokeniser) {
     var ident = '';
     if (tokeniser.token.element) {
       ident = tokeniser.token.tokenString;
       tokeniser.getNextToken();
     }
     return ident;
-  };
+  },
 
-  ns.eolOrEof = function (tokeniser) {
+  eolOrEof: function (tokeniser) {
     if (tokeniser.token.eol) {
       tokeniser.getNextToken();
     } else if (!tokeniser.token.eof) {
       throw tokeniser.parseError("Expected EOL or EOF");
     }
-  };
+  },
 
   // IDSELECTOR = # ID
-  ns.idSelector = function (tokeniser) {
+  idSelector: function (tokeniser) {
     var id = '';
     if (tokeniser.token.idSelector) {
       id = tokeniser.token.tokenString;
       tokeniser.getNextToken();
     }
     return id;
-  };
+  },
 
   // CLASSSELECTOR = (.CLASS)+
-  ns.classSelector = function (tokeniser) {
+  classSelector: function (tokeniser) {
     var classes = [];
 
     while (tokeniser.token.classSelector) {
@@ -315,9 +313,9 @@ ns('REA.helpers.haml', function (ns) {
     }
 
     return classes;
-  };
+  },
 
-  ns.templateError = function (lineNumber, characterNumber, currentLine, error) {
+  templateError: function (lineNumber, characterNumber, currentLine, error) {
     var message = error + " at line " + lineNumber + " and character " + characterNumber +
           ":\n" + currentLine + '\n';
     for (var i = 0; i < characterNumber - 1; i++) {
@@ -325,9 +323,9 @@ ns('REA.helpers.haml', function (ns) {
     }
     message += '^';
     return message;
-  };
+  },
 
-  ns.Tokeniser = function (templateId) {
+  Tokeniser: function (templateId) {
     this.buffer = null;
     if (templateId) {
       var template = document.getElementById(templateId);
@@ -493,7 +491,7 @@ ns('REA.helpers.haml', function (ns) {
     };
 
     this.parseError = function (error) {
-      return ns.templateError(this.lineNumber, this.characterNumber, this.currentLine, error);
+      return haml.templateError(this.lineNumber, this.characterNumber, this.currentLine, error);
     };
 
     this.skipToEOLorEOF = function () {
@@ -542,9 +540,9 @@ ns('REA.helpers.haml', function (ns) {
         this.buffer = this.token.matched + this.buffer;
       }
     };
-  };
+  },
 
-  ns.Buffer = function () {
+  Buffer: function () {
     this.buffer = '';
     this.outputBuffer = '';
 
@@ -568,5 +566,5 @@ ns('REA.helpers.haml', function (ns) {
     this.output = function () {
       return this.outputBuffer;
     };
-  };
-});
+  }
+};
