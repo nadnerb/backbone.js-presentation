@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/presentation.js" afterPath="$PROJECT_DIR$/js/presentation.js" />
     </list>
     <ignored path="backbone.iws" />
@@ -76,7 +73,16 @@
       <file leaf-file-name="presentation.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/presentation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="60" selection-start="3846" selection-end="3846" vertical-scroll-proportion="0.90180033">
+            <state line="105" column="18" selection-start="2575" selection-end="2575" vertical-scroll-proportion="0.58919805">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="backbone.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/backbone.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="827" column="4" selection-start="28978" selection-end="28978" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -85,7 +91,7 @@
       <file leaf-file-name="jquery-ui-1.8.13.custom.min.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/jquery-ui-1.8.13.custom.min.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="586" column="68" selection-start="187814" selection-end="187814" vertical-scroll-proportion="0.0">
+            <state line="9" column="447" selection-start="656" selection-end="656" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -102,15 +108,6 @@
       </file>
       <file leaf-file-name="page_2.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_2.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="10" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page_3.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_3.haml">
           <provider selected="true" editor-type-id="text-editor">
             <state line="1" column="10" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0">
               <folding />
@@ -563,13 +560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_1.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="9" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/page_2.haml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="10" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0">
@@ -591,16 +581,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_1.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="9" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/backbone.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="827" column="4" selection-start="28978" selection-end="28978" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/jquery-ui-1.8.13.custom.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="586" column="68" selection-start="187814" selection-end="187814" vertical-scroll-proportion="0.0">
+        <state line="9" column="447" selection-start="656" selection-end="656" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/presentation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="60" selection-start="3846" selection-end="3846" vertical-scroll-proportion="0.90180033">
+        <state line="105" column="18" selection-start="2575" selection-end="2575" vertical-scroll-proportion="0.58919805">
           <folding />
         </state>
       </provider>

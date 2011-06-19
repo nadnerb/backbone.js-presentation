@@ -52,6 +52,11 @@ window.NavigationView = Backbone.View.extend({
     'click #next-button': 'next'
   },
 
+  initialize: function () {
+    _(this).bindAll('render', 'keypress');
+    $(document).keypress(this.keypress);
+  },
+
   render: function() {
     this.$("#back-button").button({ disabled: true });
     this.$("#next-button").button({ disabled: true });
@@ -92,6 +97,14 @@ window.NavigationView = Backbone.View.extend({
   next: function () {
     var nextPage = this.page + 1;
     document.location.hash = 'page/' + nextPage;
+  },
+
+  keypress: function (event) {
+    if (event.keyCode == $.ui.keyCode.LEFT && this.page > 1) {
+      this.back();
+    } else if (event.keyCode == $.ui.keyCode.RIGHT && this.page < this.pages) {
+      this.next();
+    }
   }
 
 });
