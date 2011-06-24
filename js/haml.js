@@ -1,3 +1,5 @@
+/*jslint plusplus: false, evil: true, regexp: false */
+
 window.haml = {
 
   compileHaml: function (templateId) {
@@ -5,29 +7,52 @@ window.haml = {
       return haml.cache[templateId];
     }
 
-    var start = new Date();
-    
     var tokeniser = new haml.Tokeniser(templateId);
     var outputBuffer = new haml.Buffer();
     var elementStack = [];
 
-    var result = '  with(context) {\n    var html = "";\n';
+    var result = '  var html = "";\n  var result = "";\n  var lineNo, charNo, line;\n  with (context) {\n';
 
-    // HAML -> TEMPLATELINE* EOF
+    // HAML -> WS* (
+    //          TEMPLATELINE
+    //          | IGNOREDLINE
+    //          | EMBEDDEDJS
+    //          | JSCODE
+    //         )* EOF
     tokeniser.getNextToken();
     while (!tokeniser.token.eof) {
-      haml.templateLine(tokeniser, elementStack, outputBuffer);
+      if (!tokeniser.token.eol) {
+        var indent = haml.whitespace(tokeniser);
+        if (tokeniser.token.exclamation) {
+          haml.ignoredLine(tokeniser, indent, elementStack, outputBuffer);
+        } else if (tokeniser.token.equal) {
+          haml.embeddedJs(tokeniser, indent, elementStack, outputBuffer);
+        } else if (tokeniser.token.minus) {
+          haml.jsLine(tokeniser, indent, elementStack, outputBuffer);
+        } else if (tokeniser.token.comment) {
+          haml.commentLine(tokeniser, indent, elementStack, outputBuffer);
+        } else {
+          haml.templateLine(tokeniser, elementStack, outputBuffer, indent);
+        }
+      } else {
+        tokeniser.getNextToken();
+      }
     }
 
     outputBuffer.append(haml.closeElements(0, elementStack));
     outputBuffer.flush();
     result += outputBuffer.output();
 
-    result += '    return html;\n}\n';
+    result += '  }\n  return html;\n';
 
-    var fn = new Function('context', result);
+    var fn = null;
 
-    console.log('Compile ' + templateId + ' took ' + (new Date().getTime() - start.getTime()));
+    try {
+      fn = new Function('context', result);
+    } catch (e) {
+      throw "Incorrect embedded JS code has resulted in an invalid Haml function - " + e + "\nGenerated Function:\n" +
+              result;
+    }
 
     if (!haml.cache) {
       haml.cache = {};
@@ -37,38 +62,101 @@ window.haml = {
     return fn;
   },
 
-  // TEMPLATELINE -> WS* ([ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS])|(!CONTENTS) (EOL|EOF)
-  templateLine: function (tokeniser, elementStack, outputBuffer) {
-    var indent = haml.whitespace(tokeniser);
-    var ident = '';
-    if (!tokeniser.token.asis) {
-      ident = haml.element(tokeniser);
-      var id = haml.idSelector(tokeniser);
-      var classes = haml.classSelector(tokeniser);
-      var attrList = haml.attributeList(tokeniser);
+  commentLine: function (tokeniser, indent, elementStack, outputBuffer) {
+    if (tokeniser.token.comment) {
+      tokeniser.skipToEOLorEOF();
+    }
+  },
 
-      var currentParsePoint = tokeniser.currentParsePoint();
-      var attributesHash = haml.attributeHash(tokeniser);
-
-      var selfClosingTag = false;
-      if (tokeniser.token.slash) {
-        selfClosingTag = true;
-        tokeniser.getNextToken();
+  ignoredLine: function (tokeniser, indent, elementStack, outputBuffer) {
+    if (tokeniser.token.exclamation) {
+      tokeniser.getNextToken();
+      if (tokeniser.token.ws) {
+        indent += haml.whitespace(tokeniser);
       }
-
+      tokeniser.pushBackToken();
       outputBuffer.append(haml.closeElements(indent, elementStack));
-      if (ident.length > 0 || id.length > 0 || classes.length > 0) {
-        haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
-          outputBuffer, selfClosingTag);
-      } else if (!tokeniser.token.eol && !tokeniser.token.ws) {
-        tokeniser.pushBackToken();
+      var contents = tokeniser.skipToEOLorEOF();
+      outputBuffer.append(haml.indentText(indent) + contents + '\\n');
+    }
+  },
+
+  embeddedJs: function (tokeniser, indent, elementStack, outputBuffer) {
+    if (elementStack) {
+      outputBuffer.append(haml.closeElements(indent, elementStack));
+    }
+    if (tokeniser.token.equal) {
+      var currentParsePoint = tokeniser.currentParsePoint();
+      var expression = tokeniser.skipToEOLorEOF();
+      var indentText = haml.indentText(indent);
+      outputBuffer.append(indentText);
+      outputBuffer.flush();
+
+      if (!_(expression).includes("return ")) {
+        expression = "return " + expression;
       }
+
+      outputBuffer.appendToOutputBuffer(indentText + 'try {\n');
+      outputBuffer.appendToOutputBuffer(indentText + '    var value = (function() { with(context) { ' +
+              expression + '; }})();\n');
+      outputBuffer.appendToOutputBuffer(indentText + '    html += _(String(value)).escapeHTML() + "\\n";\n');
+      outputBuffer.appendToOutputBuffer(indentText + '} catch (e) {\n');
+      outputBuffer.appendToOutputBuffer(indentText + '  throw new Error(haml.templateError(' +
+              currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
+              haml.escapeJs(currentParsePoint.currentLine) + '",\n');
+      outputBuffer.appendToOutputBuffer(indentText + '    "Error evaluating expression - " + e));\n');
+      outputBuffer.appendToOutputBuffer(indentText + '}\n');
+    }
+  },
+
+  jsLine: function (tokeniser, indent, elementStack, outputBuffer) {
+    if (tokeniser.token.minus) {
+      outputBuffer.append(haml.closeElements(indent, elementStack));
+      outputBuffer.flush();
+      outputBuffer.appendToOutputBuffer(haml.indentText(indent));
+      var line = tokeniser.skipToEOLorEOF();
+      outputBuffer.appendToOutputBuffer(line);
+      outputBuffer.appendToOutputBuffer('\n');
+    }
+  },
+
+  // TEMPLATELINE -> ([ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS])|(!CONTENTS) (EOL|EOF)
+  templateLine: function (tokeniser, elementStack, outputBuffer, indent) {
+    outputBuffer.append(haml.closeElements(indent, elementStack));
+
+    var ident = haml.element(tokeniser);
+    var selfClosingTag = false;
+    var id = haml.idSelector(tokeniser);
+    var classes = haml.classSelector(tokeniser);
+    var attrList = haml.attributeList(tokeniser);
+
+    var currentParsePoint = tokeniser.currentParsePoint();
+    var attributesHash = haml.attributeHash(tokeniser);
+
+    if (tokeniser.token.slash) {
+      selfClosingTag = true;
+      tokeniser.getNextToken();
     }
 
-    var contents = tokeniser.skipToEOLorEOF();
+    if (ident.length > 0 || id.length > 0 || classes.length > 0) {
+      var closeTag = selfClosingTag;
+      if (!closeTag) {
+        closeTag = haml.isSelfClosingTag(ident) && !haml.tagHasContents(indent, tokeniser);
+      }
+      haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
+        outputBuffer, closeTag);
+    } else if (!haml.isEolOrEof(tokeniser) && !tokeniser.token.ws) {
+      tokeniser.pushBackToken();
+    }
+
+    var contents = haml.elementContents(tokeniser, indent + 1, outputBuffer);
     haml.eolOrEof(tokeniser);
 
-    if (!selfClosingTag && contents.length > 0) {
+    if (selfClosingTag && contents.length > 0) {
+      throw haml.templateError(currentParsePoint.lineNumber, currentParsePoint.characterNumber,
+        currentParsePoint.currentLine, "A self-closing tag can not have any contents");
+    }
+    else if (contents.length > 0) {
       if (contents.match(/^\\%/)) {
         contents = contents.substring(1);
       }
@@ -78,6 +166,27 @@ window.haml = {
       }
       outputBuffer.append(haml.indentText(i) + contents + '\\n');
     }
+  },
+
+  elementContents: function (tokeniser, indent, outputBuffer) {
+    var contents = '';
+
+    if (!tokeniser.token.eof) {
+      if (tokeniser.token.ws) {
+        tokeniser.getNextToken();
+      }
+
+      if (tokeniser.token.exclamation) {
+        contents = tokeniser.skipToEOLorEOF();
+      } else if (tokeniser.token.equal) {
+        haml.embeddedJs(tokeniser, indent, null, outputBuffer);
+      } else if (!tokeniser.token.eol) {
+        tokeniser.pushBackToken();
+        contents = _(tokeniser.skipToEOLorEOF()).escapeHTML();
+      }
+    }
+
+    return contents;
   },
 
   attributeHash: function (tokeniser) {
@@ -147,8 +256,7 @@ window.haml = {
     return result;
   },
 
-  openElement: function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash,
-                             elementStack, outputBuffer, selfClosingTag) {
+  openElement: function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash, elementStack, outputBuffer, selfClosingTag) {
     var element = ident;
     if (element.length === 0) {
       element = 'div';
@@ -157,16 +265,20 @@ window.haml = {
     outputBuffer.append(haml.indentText(indent) + '<' + element);
     if (attributeHash.length > 0) {
       outputBuffer.flush();
-      outputBuffer.appendToOutputBuffer('    html += REA.helpers.haml.generateElementAttributes(context, "' +
-        id + '", ["' +
-        classes.join('","') + '"], ' +
-        JSON.stringify(attributeList) + ', ' +
-        (attributeHash.length > 0 ? '"' + haml.escapeJs(attributeHash) + '"' : 'null') + ', ' +
-        currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
-        haml.escapeJs(currentParsePoint.currentLine) + '");\n');
+
+      attributeHash = attributeHash.replace('class:', '"class":');
+      outputBuffer.appendToOutputBuffer('    var hashFunction = function (context) { with(context) { return ' + attributeHash + '; }};\n');
+
+
+      outputBuffer.appendToOutputBuffer('    html += haml.generateElementAttributes(context, "' +
+              id + '", ["' +
+              classes.join('","') + '"], ' +
+              JSON.stringify(attributeList) + ', hashFunction, ' +
+              currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
+              haml.escapeJs(currentParsePoint.currentLine) + '");\n');
     } else {
       outputBuffer.append(haml.generateElementAttributes(null, id, classes, attributeList, null,
-        currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine));
+              currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine));
     }
     if (selfClosingTag) {
       outputBuffer.append("/>\\n");
@@ -216,8 +328,21 @@ window.haml = {
     }
     return attributes;
   },
+  
+  isSelfClosingTag: function (tag) {
+    return _(['meta', 'img', 'link', 'script', 'br', 'hr']).contains(tag);
+  },
 
-  generateElementAttributes: function (context, id, classes, attrList, attrHash, lineNumber, characterNumber,
+  tagHasContents: function (indent, tokeniser) {
+    if (!haml.isEolOrEof(tokeniser)) {
+      return true;
+    } else {
+      var nextToken = tokeniser.lookAhead(1);
+      return nextToken.ws && nextToken.tokenString.length / 2 > indent;
+    }
+  },
+
+  generateElementAttributes: function (context, id, classes, attrList, attrFunction, lineNumber, characterNumber,
                                            currentLine) {
     var attributes = {};
 
@@ -235,10 +360,9 @@ window.haml = {
       }
     }
 
-    if (attrHash && attrHash.length > 0) {
+    if (attrFunction) {
       try {
-        attrHash = attrHash.replace('class:', '"class":');
-        var hash = new Function('context', 'with(context) { return ' + attrHash + '; }').call(null, context);
+        var hash = attrFunction(context);
         if (hash) {
           for (attr in hash) {
             if (hash.hasOwnProperty(attr)) {
@@ -269,7 +393,7 @@ window.haml = {
   },
 
   attrValue: function (attr, value) {
-    if (jQuery.inArray(attr, ['selected', 'checked', 'disabled']) >= 0) {
+    if (_(['selected', 'checked', 'disabled']).contains(attr)) {
       return attr;
     } else {
       return value;
@@ -334,7 +458,7 @@ window.haml = {
 
   templateError: function (lineNumber, characterNumber, currentLine, error) {
     var message = error + " at line " + lineNumber + " and character " + characterNumber +
-          ":\n" + currentLine + '\n';
+            ":\n" + currentLine + '\n';
     for (var i = 0; i < characterNumber - 1; i++) {
       message += '-';
     }
@@ -342,26 +466,57 @@ window.haml = {
     return message;
   },
 
+  isEolOrEof: function (tokeniser) {
+    return tokeniser.token.eol || tokeniser.token.eof;
+  },
+
   Tokeniser: function (templateId) {
     this.buffer = null;
+    this.bufferIndex = null;
+    this.prevToken = null;
+    this.token = null;
+
     if (templateId) {
       var template = document.getElementById(templateId);
       if (template) {
         this.buffer = template.innerHTML;
+        this.bufferIndex = 0;
       }
     }
 
+    this.tokenMatchers = {
+      whitespace:     /\s+/g,
+      element:        /%[a-zA-Z][a-zA-Z0-9]*/g,
+      idSelector:     /#[a-zA-Z_\-][a-zA-Z0-9_\-]*/g,
+      classSelector:  /\.[a-zA-Z0-9_\-]+/g,
+      identifier:     /[a-zA-Z][a-zA-Z0-9]*/g,
+      quotedString:   /[\'][^\']*[\']/g,
+      quotedString2:  /[\"][^\"]*[\"]/g,
+      comment:        /\-#/g
+    };
+
+    this.matchToken = function (matcher) {
+      matcher.lastIndex = this.bufferIndex;
+      var result = matcher.exec(this.buffer);
+      if (result && result.index === this.bufferIndex) {
+        return result[0];
+      }
+      return null;
+    };
+
     this.getNextToken = function () {
+      this.prevToken = this.token;
       this.token = null;
-      if (this.buffer === null || this.buffer.length === 0) {
+
+      if (this.buffer === null || this.buffer.length === this.bufferIndex) {
         this.token = { eof: true, token: 'EOF' };
       } else {
         this.initLine();
 
         if (!this.token) {
-          var ch = this.buffer.charCodeAt(0);
-          var ch1 = this.buffer.charCodeAt(1);
-          if (this.buffer && (ch === 10 || ch === 13 && ch1 === 10)) {
+          var ch = this.buffer.charCodeAt(this.bufferIndex);
+          var ch1 = this.buffer.charCodeAt(this.bufferIndex + 1);
+          if (ch === 10 || (ch === 13 && ch1 === 10)) {
             this.token = { eol: true, token: 'EOL' };
             if (ch === 13 && ch1 === 10) {
               this.advanceCharsInBuffer(2);
@@ -376,61 +531,70 @@ window.haml = {
         }
 
         if (!this.token) {
-          var ws = this.buffer.match(/^\s+/);
+          var ws = this.matchToken(this.tokenMatchers.whitespace);
           if (ws) {
-            this.token = { ws: true, token: 'WS', tokenString: ws[0], matched: ws[0] };
-            this.advanceCharsInBuffer(ws[0].length);
+            this.token = { ws: true, token: 'WS', tokenString: ws, matched: ws };
+            this.advanceCharsInBuffer(ws.length);
           }
         }
 
         if (!this.token) {
-          var element = this.buffer.match(/^%[a-zA-Z][a-zA-Z0-9]*/);
+          var element = this.matchToken(this.tokenMatchers.element);
           if (element) {
-            this.token = { element: true, token: 'ELEMENT', tokenString: element[0].substring(1),
-              matched: element[0] };
-            this.advanceCharsInBuffer(element[0].length);
+            this.token = { element: true, token: 'ELEMENT', tokenString: element.substring(1),
+              matched: element };
+            this.advanceCharsInBuffer(element.length);
           }
         }
 
         if (!this.token) {
-          var id = this.buffer.match(/^#[a-zA-Z_\-][a-zA-Z0-9_\-]*/);
+          var id = this.matchToken(this.tokenMatchers.idSelector);
           if (id) {
-            this.token = { idSelector: true, token: 'ID', tokenString: id[0].substring(1), matched: id[0] };
-            this.advanceCharsInBuffer(id[0].length);
+            this.token = { idSelector: true, token: 'ID', tokenString: id.substring(1), matched: id };
+            this.advanceCharsInBuffer(id.length);
           }
         }
 
         if (!this.token) {
-          var c = this.buffer.match(/^\.[a-zA-Z0-9_\-]+/);
+          var c = this.matchToken(this.tokenMatchers.classSelector);
           if (c) {
-            this.token = { classSelector: true, token: 'CLASS', tokenString: c[0].substring(1), matched: c[0] };
-            this.advanceCharsInBuffer(c[0].length);
+            this.token = { classSelector: true, token: 'CLASS', tokenString: c.substring(1), matched: c };
+            this.advanceCharsInBuffer(c.length);
           }
         }
 
         if (!this.token) {
-          var identifier = this.buffer.match(/^[a-zA-Z][a-zA-Z0-9]*/);
+          var identifier = this.matchToken(this.tokenMatchers.identifier);
           if (identifier) {
-            this.token = { identifier: true, token: 'IDENTIFIER', tokenString: identifier[0], matched: identifier[0] };
-            this.advanceCharsInBuffer(identifier[0].length);
+            this.token = { identifier: true, token: 'IDENTIFIER', tokenString: identifier, matched: identifier };
+            this.advanceCharsInBuffer(identifier.length);
           }
         }
 
         if (!this.token) {
-          var str = this.buffer.match(/^[\'][^\']*[\']/);
+          var str = this.matchToken(this.tokenMatchers.quotedString);
           if (!str) {
-            str = this.buffer.match(/^[\"][^\"]*[\"]/);
+            str = this.matchToken(this.tokenMatchers.quotedString2);
           }
           if (str) {
-            this.token = { string: true, token: 'STRING', tokenString: str[0].substring(1, str[0].length - 1),
-              matched: str[0] };
-            this.advanceCharsInBuffer(str[0].length);
+            this.token = { string: true, token: 'STRING', tokenString: str.substring(1, str.length - 1),
+              matched: str };
+            this.advanceCharsInBuffer(str.length);
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === '{') {
-            var i = 0;
+          var comment = this.matchToken(this.tokenMatchers.comment);
+          if (comment) {
+            this.token = { comment: true, token: 'COMMENT', tokenString: comment, matched: comment};
+            this.advanceCharsInBuffer(comment.length);
+          }
+
+        }
+
+        if (!this.token) {
+          if (this.buffer && this.buffer.charAt(this.bufferIndex) === '{') {
+            var i = this.bufferIndex;
             var characterNumberStart = this.characterNumber;
             var lineNumberStart = this.lineNumber;
             while (i < this.buffer.length && this.buffer.charAt(i) !== '}') {
@@ -441,49 +605,58 @@ window.haml = {
               this.lineNumber = lineNumberStart;
               throw this.parseError('Error parsing attribute hash - Did not find a terminating "}"');
             } else {
-              this.token = { attributeHash: true, token: 'ATTRHASH', tokenString: this.buffer.substring(0, i + 1),
-                matched: this.buffer.substring(0, i + 1) };
-              this.advanceCharsInBuffer(i + 1);
+              this.token = { attributeHash: true, token: 'ATTRHASH',
+                tokenString: this.buffer.substring(this.bufferIndex, i + 1),
+                matched: this.buffer.substring(this.bufferIndex, i + 1) };
+              this.advanceCharsInBuffer(i - this.bufferIndex + 1);
             }
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === '(') {
-            this.token = { openBracket: true, token: 'OPENBRACKET', tokenString: this.buffer.charAt(0),
-              matched: this.buffer.charAt(0) };
+          if (this.buffer.charAt(this.bufferIndex) === '(') {
+            this.token = { openBracket: true, token: 'OPENBRACKET', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
             this.advanceCharsInBuffer(1);
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === ')') {
-            this.token = { closeBracket: true, token: 'CLOSEBRACKET', tokenString: this.buffer.charAt(0),
-              matched: this.buffer.charAt(0) };
+          if (this.buffer.charAt(this.bufferIndex) === ')') {
+            this.token = { closeBracket: true, token: 'CLOSEBRACKET', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
             this.advanceCharsInBuffer(1);
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === '=') {
-            this.token = { equal: true, token: 'EQUAL', tokenString: this.buffer.charAt(0),
-              matched: this.buffer.charAt(0) };
+          if (this.buffer.charAt(this.bufferIndex) === '=') {
+            this.token = { equal: true, token: 'EQUAL', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
             this.advanceCharsInBuffer(1);
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === '/') {
-            this.token = { slash: true, token: 'SLASH', tokenString: this.buffer.charAt(0),
-              matched: this.buffer.charAt(0) };
+          if (this.buffer.charAt(this.bufferIndex) === '/') {
+            this.token = { slash: true, token: 'SLASH', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
             this.advanceCharsInBuffer(1);
           }
         }
 
         if (!this.token) {
-          if (this.buffer && this.buffer.charAt(0) === '!') {
-            this.token = { asis: true, token: 'ASIS', tokenString: this.buffer.charAt(0),
-              matched: this.buffer.charAt(0) };
+          if (this.buffer.charAt(this.bufferIndex) === '!') {
+            this.token = { exclamation: true, token: 'EXCLAMATION', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
+            this.advanceCharsInBuffer(1);
+          }
+        }
+
+        if (!this.token) {
+          if (this.buffer.charAt(this.bufferIndex) === '-') {
+            this.token = { minus: true, token: 'MINUS', tokenString: this.buffer.charAt(this.bufferIndex),
+              matched: this.buffer.charAt(this.bufferIndex) };
             this.advanceCharsInBuffer(1);
           }
         }
@@ -492,9 +665,31 @@ window.haml = {
           this.token = { unknown: true, token: 'UNKNOWN' };
         }
       }
-  //    console.log(this.token.token + ' ' + this.lineNumber + ':' + this.characterNumber +
-  //      ' - [' + this.currentLine + ']');
       return this.token;
+    };
+
+    this.lookAhead = function (numberOfTokens) {
+      var token = null;
+      if (numberOfTokens > 0) {
+        var currentToken = this.token;
+        var prevToken = this.prevToken;
+        var currentLine =  this.currentLine;
+        var lineNumber = this.lineNumber;
+        var characterNumber = this.characterNumber;
+        var bufferIndex = this.bufferIndex;
+
+        for (var i = 0; i < numberOfTokens; i++) {
+          token = this.getNextToken();
+        }
+
+        this.token = currentToken;
+        this.prevToken = prevToken;
+        this.currentLine = currentLine;
+        this.lineNumber = lineNumber;
+        this.characterNumber = characterNumber;
+        this.bufferIndex = bufferIndex;
+      }
+      return token;
     };
 
     this.initLine = function () {
@@ -505,8 +700,10 @@ window.haml = {
       }
     };
 
+    this.currentLineMatcher = /[^\n]*/g;
     this.getCurrentLine = function () {
-      var line = this.buffer.match(/^[^\n]*/);
+      this.currentLineMatcher.lastIndex = this.bufferIndex;
+      var line = this.currentLineMatcher.exec(this.buffer);
       if (line) {
         return line[0];
       }
@@ -523,8 +720,9 @@ window.haml = {
       var text = '';
 
       if (!this.token.eof && !this.token.eol) {
-        var line = this.buffer.match(/^[^\n]*/);
-        if (line) {
+        this.currentLineMatcher.lastIndex = this.bufferIndex;
+        var line = this.currentLineMatcher.exec(this.buffer);
+        if (line && line.index === this.bufferIndex) {
           text = line[0];
           this.advanceCharsInBuffer(text.length);
           this.getNextToken();
@@ -536,8 +734,8 @@ window.haml = {
 
     this.advanceCharsInBuffer = function (numChars) {
       for (var i = 0; i < numChars; i++) {
-        var ch = this.buffer.charCodeAt(i);
-        var ch1 = this.buffer.charCodeAt(i + 1);
+        var ch = this.buffer.charCodeAt(this.bufferIndex + i);
+        var ch1 = this.buffer.charCodeAt(this.bufferIndex + i + 1);
         if (ch === 13 && ch1 === 10) {
           this.lineNumber++;
           this.characterNumber = 0;
@@ -549,7 +747,7 @@ window.haml = {
           this.characterNumber++;
         }
       }
-      this.buffer = this.buffer.substring(numChars);
+      this.bufferIndex += numChars;
     };
 
     this.currentParsePoint = function () {
@@ -562,7 +760,8 @@ window.haml = {
 
     this.pushBackToken = function () {
       if (!this.token.unknown) {
-        this.buffer = this.token.matched + this.buffer;
+        this.bufferIndex -= this.token.matched.length;
+        this.token = this.prevToken;
       }
     };
   },
@@ -584,7 +783,9 @@ window.haml = {
     };
 
     this.flush = function () {
-      this.outputBuffer += '    html += "' + haml.escapeJs(this.buffer) + '";\n';
+      if (this.buffer && this.buffer.length > 0) {
+        this.outputBuffer += '    html += "' + haml.escapeJs(this.buffer) + '";\n';
+      }
       this.buffer = '';
     };
 
