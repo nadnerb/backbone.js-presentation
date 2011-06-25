@@ -97,7 +97,7 @@ body {
     vertical-align: middle;
 }
 
-#page-3-content li, #page-4-content li, #page-6-content li {
+#page-3-content li, #page-4-content li, #page-6-content li, #page-10-content li  {
     font-size: xx-large;
     padding-top: 10px;
 }
@@ -107,6 +107,11 @@ body {
     height: 100%;
 }
 
-#page-7-content, #page-8-content {
+#page-7-content, #page-8-content, #page-9-content, #page-10-content {
     text-align: left;
+}
+
+#page-10-content h4 {
+    text-align: center;
+    margin-top: 10px;
 }

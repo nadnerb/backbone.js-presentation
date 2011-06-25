@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_10.haml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_11.haml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/presentation.js" afterPath="$PROJECT_DIR$/js/presentation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_5.haml" afterPath="$PROJECT_DIR$/pages/page_5.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_6.haml" afterPath="$PROJECT_DIR$/pages/page_6.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_7.haml" afterPath="$PROJECT_DIR$/pages/page_7.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_8.haml" afterPath="$PROJECT_DIR$/pages/page_8.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/presentation.css" afterPath="$PROJECT_DIR$/css/presentation.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/haml.js" afterPath="$PROJECT_DIR$/js/haml.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_9.haml" afterPath="$PROJECT_DIR$/pages/page_9.haml" />
     </list>
     <ignored path="backbone.iws" />
@@ -67,51 +67,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="page_1.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_1.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="20" selection-start="1943" selection-end="1943" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page_2.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_2.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page_4.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_4.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="3" selection-start="169" selection-end="169" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page_3.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_3.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="22" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page_5.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/page_5.haml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="18" selection-start="18" selection-end="18" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="page_6.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_6.haml">
           <provider selected="true" editor-type-id="text-editor">
@@ -142,16 +97,61 @@
       <file leaf-file-name="page_9.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_9.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="9" selection-start="1661" selection-end="1661" vertical-scroll-proportion="0.0">
+            <state line="206" column="0" selection-start="7096" selection-end="7096" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="presentation.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="page_10.haml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/page_10.haml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="101" column="9" selection-start="3142" selection-end="3142" vertical-scroll-proportion="1.1190476">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="53" selection-start="1278" selection-end="1278" vertical-scroll-proportion="-11.875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="page_11.haml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/page_11.haml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="3" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="presentation.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/presentation.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="111" column="1" selection-start="1609" selection-end="1609" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="todos.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="250" column="5" selection-start="4528" selection-end="7541" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="presentation.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/presentation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="285" column="27" selection-start="7259" selection-end="7259" vertical-scroll-proportion="0.78571427">
+            <state line="285" column="27" selection-start="7259" selection-end="7259" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -171,22 +171,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pages/page_1.haml.js" />
-        <option value="$PROJECT_DIR$/todos.html" />
         <option value="$PROJECT_DIR$/pages/page_2.haml" />
         <option value="$PROJECT_DIR$/css/sh_style.css" />
         <option value="$PROJECT_DIR$/js/haml.js" />
         <option value="$PROJECT_DIR$/pages/page_1.haml" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/css/presentation.css" />
         <option value="$PROJECT_DIR$/pages/page_4.haml" />
         <option value="$PROJECT_DIR$/pages/page_3.haml" />
         <option value="$PROJECT_DIR$/pages/page_5.haml" />
         <option value="$PROJECT_DIR$/pages/page_6.haml" />
         <option value="$PROJECT_DIR$/pages/page_7.haml" />
         <option value="$PROJECT_DIR$/pages/page_8.haml" />
-        <option value="$PROJECT_DIR$/pages/page_9.haml" />
         <option value="$PROJECT_DIR$/js/presentation.js" />
+        <option value="$PROJECT_DIR$/pages/page_9.haml" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/pages/page_11.haml" />
+        <option value="$PROJECT_DIR$/css/presentation.css" />
+        <option value="$PROJECT_DIR$/pages/page_10.haml" />
       </list>
     </option>
   </component>
@@ -508,7 +508,7 @@
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925585" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.6707441" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -554,7 +554,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated content" />
+    <option name="LAST_COMMIT_MESSAGE" value="can navigate back by sequence" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -574,6 +574,7 @@
     <MESSAGE value="added new page 4" />
     <MESSAGE value="updated the font sizes for lists" />
     <MESSAGE value="updated content" />
+    <MESSAGE value="can navigate back by sequence" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -583,40 +584,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/underscore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/sh_style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="15" selection-start="35" selection-end="35" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/haml.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="69" column="0" selection-start="2044" selection-end="2044" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="58" selection-start="2016" selection-end="2016" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="21" selection-start="1770" selection-end="1778" vertical-scroll-proportion="-13.75">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/presentation.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="35" selection-start="1354" selection-end="1357" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -668,13 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_9.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="9" selection-start="1661" selection-end="1661" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/page_8.haml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="100" column="9" selection-start="2741" selection-end="2741" vertical-scroll-proportion="0.0">
@@ -682,9 +645,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="250" column="5" selection-start="4528" selection-end="7541" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/presentation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="285" column="27" selection-start="7259" selection-end="7259" vertical-scroll-proportion="0.78571427">
+        <state line="285" column="27" selection-start="7259" selection-end="7259" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="53" selection-start="1278" selection-end="1278" vertical-scroll-proportion="-11.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_11.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="3" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_9.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="206" column="0" selection-start="7096" selection-end="7096" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/presentation.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="1" selection-start="1609" selection-end="1609" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_10.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="9" selection-start="3142" selection-end="3142" vertical-scroll-proportion="1.1190476">
           <folding />
         </state>
       </provider>

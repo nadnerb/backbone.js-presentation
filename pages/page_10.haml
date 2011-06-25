@@ -1,0 +1,103 @@
+<script id="page-10" title="View Templates" type="text/haml-template">
+%ul
+  %li mustache.js: Minimal templating with {{mustaches}}
+  %li JQuery Templates (JST)
+  %li Underscore Templates
+  %li Eco: Embedded CoffeeScript templates
+  %li haml.js
+</script>
+
+<script id="page-10-1" type="text/haml-template">
+%h4
+  mustache.js: Minimal templating with {{mustaches}}
+%pre(class="sh_javascript")
+  !  var objects = {
+  !    a_object: {
+  !      title: 'this is an object',
+  !      description: 'one of its attributes is a list',
+  !      a_list: [{label: 'listitem1'}, {label: 'listitem2'}]
+  !    }
+  !  };
+%pre
+  &  {{#a_object}}
+  &    <h1>{{title}}</h1>
+  &    <p>{{description}}</p>
+  &    <ul>
+  &      {{#a_list}}
+  &        <li>{{label}}</li>
+  &      {{/a_list}}
+  &    </ul>
+  &  {{/a_object}}
+%script(type="text/javascript")
+  sh_highlightDocument();
+</script>
+
+<script id="page-10-2" type="text/haml-template">
+%h4
+  Underscore Templates - ERB Style
+%pre
+  &<% _.each(people, function(name) { %>
+  &  <li><%= name %></li>
+  &<% }); %>
+</script>
+
+<script id="page-10-3" type="text/haml-template">
+%h4
+  Eco: Embedded CoffeeScript templates
+%pre
+  &<% if @projects.length: %>
+  &  <% for project in @projects: %>
+  &    <a href="<%= project.url %>"><%= project.name %></a>
+  &    <p><%= project.description %></p>
+  &  <% end %>
+  &<% else: %>
+  &  No projects
+  &<% end %>
+</script>
+
+<script id="page-10-4" type="text/haml-template">
+%h4
+  JST - Jquery templates
+%pre
+  &<form id="feature-property">
+  &  <ul>
+  &    {{each(i, productOption) productOptions}}
+  &    <li class="duration-option">
+  &      <input type="radio"
+  &             value='{{= productOption.get("duration") }}'
+  &             id='duration-{{= productOption.get("duration") }}'
+  &             name='duration'
+  &      {{if i === 0}}checked{{/if}}
+  &      />
+  &      <label for='duration-{{= productOption.get("duration") }}' class="loud">{{=
+  &        productOption.get("duration") }} Days</label>
+  &    </li>
+  &    {{/each}}
+  &  </ul>
+  &  <input type="hidden" id="price" name="price" value='{{= productOptions[0].get("price")
+  &  }}'>
+  &  <input type="hidden" id="name" name="name" value='{{= productOptions[0].get("name")
+  &  }}'>
+  &  <input type="hidden" id="description" name="description"
+  &    value='{{= productOptions[0].get("description") }}'>
+  &</form>
+</script>
+
+<script id="page-10-5" type="text/haml-template">
+%h4
+  HAML.js - because we loves it
+%pre
+  &%form#feature-property
+  &  %ul
+  &    - _(productOptions).each(function (productOption) {
+  &      %li.duration-option
+  &        %input(type="radio" name='duration'){ value: productOption.get("duration"),
+  &             id:['duration', productOption.get("duration")], checked: i === 0 }
+  &        %label.load{ for: 'duration-' + productOption.get("duration") }
+  &          = productOption.get("duration")
+  &          Days
+  &  %input(type="hidden" id="price" name="price"){ value: productOptions[0].get("price")}
+  &  %input(type="hidden" id="name" name="name"){value: productOptions[0].get("name")}
+  &  %input(type="hidden" id="description" name="description"){
+  &      value: productOptions[0].get("description")}
+</script>
