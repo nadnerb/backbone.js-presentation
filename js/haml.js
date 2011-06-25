@@ -18,6 +18,7 @@ window.haml = {
     //          | IGNOREDLINE
     //          | EMBEDDEDJS
     //          | JSCODE
+    //          | COMMENTLINE
     //         )* EOF
     tokeniser.getNextToken();
     while (!tokeniser.token.eof) {
@@ -25,11 +26,11 @@ window.haml = {
         var indent = haml.whitespace(tokeniser);
         if (tokeniser.token.exclamation) {
           haml.ignoredLine(tokeniser, indent, elementStack, outputBuffer);
-        } else if (tokeniser.token.equal) {
+        } else if (tokeniser.token.equal || tokeniser.token.escapeHtml || tokeniser.token.unescapeHtml) {
           haml.embeddedJs(tokeniser, indent, elementStack, outputBuffer);
         } else if (tokeniser.token.minus) {
           haml.jsLine(tokeniser, indent, elementStack, outputBuffer);
-        } else if (tokeniser.token.comment) {
+        } else if (tokeniser.token.comment || tokeniser.token.slash) {
           haml.commentLine(tokeniser, indent, elementStack, outputBuffer);
         } else {
           haml.templateLine(tokeniser, elementStack, outputBuffer, indent);
@@ -39,7 +40,7 @@ window.haml = {
       }
     }
 
-    outputBuffer.append(haml.closeElements(0, elementStack));
+    haml.closeElements(0, elementStack, outputBuffer, tokeniser);
     outputBuffer.flush();
     result += outputBuffer.output();
 
@@ -65,6 +66,25 @@ window.haml = {
   commentLine: function (tokeniser, indent, elementStack, outputBuffer) {
     if (tokeniser.token.comment) {
       tokeniser.skipToEOLorEOF();
+    } else if (tokeniser.token.slash) {
+      haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
+      outputBuffer.append(haml.indentText(indent));
+      outputBuffer.append("<!--");
+      var contents = tokeniser.skipToEOLorEOF();
+      if (contents && contents.length > 0) {
+        outputBuffer.append(contents);
+      }
+
+      if (contents && _(contents).startsWith('[') && contents.match(/\]\s*$/)) {
+        elementStack[indent] = { htmlConditionalComment: true };
+        outputBuffer.append(">");
+      } else {
+        elementStack[indent] = { htmlComment: true };
+      }
+
+      if (haml.tagHasContents(indent, tokeniser)) {
+        outputBuffer.append("\\n");
+      }
     }
   },
 
@@ -75,7 +95,7 @@ window.haml = {
         indent += haml.whitespace(tokeniser);
       }
       tokeniser.pushBackToken();
-      outputBuffer.append(haml.closeElements(indent, elementStack));
+      haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
       var contents = tokeniser.skipToEOLorEOF();
       outputBuffer.append(haml.indentText(indent) + contents + '\\n');
     }
@@ -83,9 +103,10 @@ window.haml = {
 
   embeddedJs: function (tokeniser, indent, elementStack, outputBuffer) {
     if (elementStack) {
-      outputBuffer.append(haml.closeElements(indent, elementStack));
+      haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
     }
-    if (tokeniser.token.equal) {
+    if (tokeniser.token.equal || tokeniser.token.escapeHtml || tokeniser.token.unescapeHtml) {
+      var escapeHtml =  tokeniser.token.escapeHtml || tokeniser.token.equal;
       var currentParsePoint = tokeniser.currentParsePoint();
       var expression = tokeniser.skipToEOLorEOF();
       var indentText = haml.indentText(indent);
@@ -99,7 +120,11 @@ window.haml = {
       outputBuffer.appendToOutputBuffer(indentText + 'try {\n');
       outputBuffer.appendToOutputBuffer(indentText + '    var value = (function() { with(context) { ' +
               expression + '; }})();\n');
-      outputBuffer.appendToOutputBuffer(indentText + '    html += _(String(value)).escapeHTML() + "\\n";\n');
+      if (escapeHtml) {
+        outputBuffer.appendToOutputBuffer(indentText + '    html += _(String(value)).escapeHTML() + "\\n";\n');
+      } else {
+        outputBuffer.appendToOutputBuffer(indentText + '    html += String(value) + "\\n";\n');
+      }
       outputBuffer.appendToOutputBuffer(indentText + '} catch (e) {\n');
       outputBuffer.appendToOutputBuffer(indentText + '  throw new Error(haml.templateError(' +
               currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
@@ -111,18 +136,24 @@ window.haml = {
 
   jsLine: function (tokeniser, indent, elementStack, outputBuffer) {
     if (tokeniser.token.minus) {
-      outputBuffer.append(haml.closeElements(indent, elementStack));
+      haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
       outputBuffer.flush();
       outputBuffer.appendToOutputBuffer(haml.indentText(indent));
       var line = tokeniser.skipToEOLorEOF();
       outputBuffer.appendToOutputBuffer(line);
       outputBuffer.appendToOutputBuffer('\n');
+
+      if (line.match(/function\s\((,?\s*\w+)*\)\s*{\s*$/)) {
+        elementStack[indent] = { fnBlock: true };
+      } else if (line.match(/{\s*$/)) {
+        elementStack[indent] = { block: true };
+      }
     }
   },
 
   // TEMPLATELINE -> ([ELEMENT][IDSELECTOR][CLASSSELECTORS][ATTRIBUTES] [SLASH|CONTENTS])|(!CONTENTS) (EOL|EOF)
   templateLine: function (tokeniser, elementStack, outputBuffer, indent) {
-    outputBuffer.append(haml.closeElements(indent, elementStack));
+    haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
 
     var ident = haml.element(tokeniser);
     var selfClosingTag = false;
@@ -178,7 +209,7 @@ window.haml = {
 
       if (tokeniser.token.exclamation) {
         contents = tokeniser.skipToEOLorEOF();
-      } else if (tokeniser.token.equal) {
+      } else if (tokeniser.token.equal || tokeniser.token.escapeHtml || tokeniser.token.unescapeHtml) {
         haml.embeddedJs(tokeniser, indent, null, outputBuffer);
       } else if (!tokeniser.token.eol) {
         tokeniser.pushBackToken();
@@ -239,21 +270,33 @@ window.haml = {
     return attr;
   },
 
-  closeElement: function (indent, elementStack) {
-    var html = '';
+  closeElement: function (indent, elementStack, outputBuffer, tokeniser) {
     if (elementStack[indent]) {
-      html += haml.indentText(indent) + '</' + elementStack[indent].tag + '>\\n';
+      if (elementStack[indent].htmlComment) {
+        outputBuffer.append(haml.indentText(indent) + '-->\\n');
+      } else if (elementStack[indent].htmlConditionalComment) {
+        outputBuffer.append(haml.indentText(indent) + '<![endif]-->\\n');
+      } else if (elementStack[indent].block) {
+        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*}/g)) {
+          outputBuffer.flush();
+          outputBuffer.appendToOutputBuffer(haml.indentText(indent) + '}\n');
+        }
+      } else if (elementStack[indent].fnBlock) {
+        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*}/g)) {
+          outputBuffer.flush();
+          outputBuffer.appendToOutputBuffer(haml.indentText(indent) + '});\n');
+        }
+      } else {
+        outputBuffer.append(haml.indentText(indent) + '</' + elementStack[indent].tag + '>\\n');
+      }
       elementStack[indent] = null;
     }
-    return html;
   },
 
-  closeElements: function (indent, elementStack) {
-    var result = '';
+  closeElements: function (indent, elementStack, outputBuffer, tokeniser) {
     for (var i = elementStack.length - 1; i >= indent; (i--)) {
-      result += haml.closeElement(i, elementStack);
+      haml.closeElement(i, elementStack, outputBuffer, tokeniser);
     }
-    return result;
   },
 
   openElement: function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash, elementStack, outputBuffer, selfClosingTag) {
@@ -492,7 +535,9 @@ window.haml = {
       identifier:     /[a-zA-Z][a-zA-Z0-9]*/g,
       quotedString:   /[\'][^\']*[\']/g,
       quotedString2:  /[\"][^\"]*[\"]/g,
-      comment:        /\-#/g
+      comment:        /\-#/g,
+      escapeHtml:     /\&=/g,
+      unescapeHtml:   /\!=/g
     };
 
     this.matchToken = function (matcher) {
@@ -595,7 +640,22 @@ window.haml = {
             this.token = { comment: true, token: 'COMMENT', tokenString: comment, matched: comment};
             this.advanceCharsInBuffer(comment.length);
           }
+        }
 
+        if (!this.token) {
+          var escapeHtml = this.matchToken(this.tokenMatchers.escapeHtml);
+          if (escapeHtml) {
+            this.token = { escapeHtml: true, token: 'ESCAPEHTML', tokenString: escapeHtml, matched: escapeHtml};
+            this.advanceCharsInBuffer(escapeHtml.length);
+          }
+        }
+
+        if (!this.token) {
+          var unescapeHtml = this.matchToken(this.tokenMatchers.unescapeHtml);
+          if (unescapeHtml) {
+            this.token = { unescapeHtml: true, token: 'UNESCAPEHTML', tokenString: unescapeHtml, matched: unescapeHtml};
+            this.advanceCharsInBuffer(unescapeHtml.length);
+          }
         }
 
         if (!this.token) {
@@ -669,8 +729,6 @@ window.haml = {
 
         if (this.token === null) {
           this.token = { unknown: true, token: 'UNKNOWN' };
-//          throw haml.templateError(this.lineNumber, this.characterNumber, this.currentLine,
-//            "Parser error: Unrecognised character '" + this.buffer.charAt(this.bufferIndex) + "'");
         }
       }
       return this.token;

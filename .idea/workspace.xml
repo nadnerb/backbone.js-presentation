@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_7.haml" afterPath="$PROJECT_DIR$/pages/page_7.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/haml.js" afterPath="$PROJECT_DIR$/js/haml.js" />
     </list>
     <ignored path="backbone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -125,10 +125,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_7.haml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="page_7.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.6904762">
+            <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -143,10 +143,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="todos.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="todos.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="1005" selection-end="2094" vertical-scroll-proportion="0.0">
+            <state line="70" column="5" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.8095238">
               <folding />
             </state>
           </provider>
@@ -549,7 +549,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="completed page 7" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated page-7" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -565,6 +565,7 @@
     <MESSAGE value="added caching of haml functions" />
     <MESSAGE value="updated haml" />
     <MESSAGE value="completed page 7" />
+    <MESSAGE value="updated page-7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -645,16 +646,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
+    <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1005" selection-end="2094" vertical-scroll-proportion="0.0">
+        <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
+    <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.6904762">
+        <state line="70" column="5" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.8095238">
           <folding />
         </state>
       </provider>
