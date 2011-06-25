@@ -1,7 +1,8 @@
 window.PresentationController = Backbone.Controller.extend({
 
   routes: {
-    "page/:pageIndex" : "page"
+    "page/:pageIndex" : "page",
+    "page/:pageIndex/:seq" : "page"
   },
 
   initialize: function () {
@@ -12,6 +13,7 @@ window.PresentationController = Backbone.Controller.extend({
     this.navigationView.bind('back', this.back);
     this.contentsView = new ContentsView();
     this.contentsView.bind('next', this.next);
+    this.contentsView.bind('back', this.back);
     this.navigationView.render();
     this.loadPages();
   },
@@ -21,11 +23,11 @@ window.PresentationController = Backbone.Controller.extend({
     document.location.hash = 'page/1';
   },
 
-  page: function (pageIndex) {
+  page: function (pageIndex, seq) {
     this.page = parseInt(pageIndex, 10);
     this.headerView.updatePage(this.page);
     this.navigationView.updatePage(this.page);
-    this.contentsView.updatePage(this.page);
+    this.contentsView.updatePage(this.page, seq);
   },
 
   loadPages: function () {
@@ -53,7 +55,7 @@ window.PresentationController = Backbone.Controller.extend({
   back: function () {
     if (this.page > 1) {
       var nextPage = this.page - 1;
-      document.location.hash = 'page/' + nextPage;
+      document.location.hash = 'page/' + nextPage + '/last';
     }
   },
 
@@ -215,10 +217,14 @@ window.ContentsView = Backbone.View.extend({
     this.$(this.pageId()).html(html);
   },
 
-  updatePage: function (page) {
+  updatePage: function (page, seq) {
     this.lastPage = this.page;
     this.page = page;
-    this.sequence = null;
+    if (seq === 'last') {
+      this.sequence = this.lastSequence();
+    } else {
+      this.sequence = null;
+    }
     this.render();
     
     if (!this.lastPage) {
@@ -250,6 +256,17 @@ window.ContentsView = Backbone.View.extend({
       } else {
         this.trigger('next');
       }
+    } else if (event.keyCode == $.ui.keyCode.UP) {
+      if (this.sequence) {
+        if (this.sequence == 1) {
+          this.sequence = null;
+        } else {
+          this.sequence--;
+        }
+        this.render();
+      } else {
+        this.trigger('back');
+      }
     }
   },
 
@@ -259,6 +276,14 @@ window.ContentsView = Backbone.View.extend({
       nextSequence = this.sequence + 1;
     }
     return $('#page-' + this.page + '-' + nextSequence).length > 0;
+  },
+
+  lastSequence: function () {
+    var nextSequence = 1;
+    while ($('#page-' + this.page + '-' + nextSequence).length > 0) {
+      nextSequence++;
+    }
+    return nextSequence - 1;
   }
 
 });
