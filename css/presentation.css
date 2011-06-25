@@ -41,13 +41,14 @@ body {
     float: right;
 }
 
-#timer {
+#timerDiv {
     width: 150px;
     float: right;
     height: 100%;
-    line-height: 100px;
+    line-height: 40px;
     font-size: xx-large;
     text-align: center;
+    padding-top: 10px;
 }
 
 #title {
@@ -96,11 +97,16 @@ body {
     vertical-align: middle;
 }
 
-#page-4-content iframe {
+#page-3-content li, #page-4-content li, #page-6-content li {
+    font-size: xx-large;
+    padding-top: 10px;
+}
+
+#page-5-content iframe {
     width: 100%;
     height: 100%;
 }
 
-#page-7-content {
+#page-7-content, #page-8-content {
     text-align: left;
 }
