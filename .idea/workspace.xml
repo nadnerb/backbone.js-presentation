@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_10.haml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_11.haml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/sh_html.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/presentation.css" afterPath="$PROJECT_DIR$/css/presentation.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/haml.js" afterPath="$PROJECT_DIR$/js/haml.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_9.haml" afterPath="$PROJECT_DIR$/pages/page_9.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_11.haml" afterPath="$PROJECT_DIR$/pages/page_11.haml" />
     </list>
     <ignored path="backbone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -103,10 +100,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_10.haml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="page_10.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_10.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="9" selection-start="3142" selection-end="3142" vertical-scroll-proportion="1.1190476">
+            <state line="79" column="9" selection-start="2224" selection-end="2224" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -121,10 +118,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_11.haml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="page_11.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/page_11.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="3" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0">
+            <state line="54" column="7" selection-start="1981" selection-end="1981" vertical-scroll-proportion="0.78571427">
               <folding />
             </state>
           </provider>
@@ -133,7 +130,7 @@
       <file leaf-file-name="presentation.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/presentation.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="111" column="1" selection-start="1609" selection-end="1609" vertical-scroll-proportion="0.0">
+            <state line="97" column="1" selection-start="1317" selection-end="1317" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -184,9 +181,9 @@
         <option value="$PROJECT_DIR$/js/presentation.js" />
         <option value="$PROJECT_DIR$/pages/page_9.haml" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/pages/page_11.haml" />
-        <option value="$PROJECT_DIR$/css/presentation.css" />
         <option value="$PROJECT_DIR$/pages/page_10.haml" />
+        <option value="$PROJECT_DIR$/css/presentation.css" />
+        <option value="$PROJECT_DIR$/pages/page_11.haml" />
       </list>
     </option>
   </component>
@@ -554,7 +551,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="can navigate back by sequence" />
+    <option name="LAST_COMMIT_MESSAGE" value="Page 10 done" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -575,6 +572,7 @@
     <MESSAGE value="updated the font sizes for lists" />
     <MESSAGE value="updated content" />
     <MESSAGE value="can navigate back by sequence" />
+    <MESSAGE value="Page 10 done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -666,13 +664,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_11.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="3" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/page_9.haml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="206" column="0" selection-start="7096" selection-end="7096" vertical-scroll-proportion="0.0">
@@ -680,16 +671,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/presentation.css">
+    <entry file="file://$PROJECT_DIR$/pages/page_10.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="1" selection-start="1609" selection-end="1609" vertical-scroll-proportion="0.0">
+        <state line="79" column="9" selection-start="2224" selection-end="2224" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_10.haml">
+    <entry file="file://$PROJECT_DIR$/css/presentation.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="9" selection-start="3142" selection-end="3142" vertical-scroll-proportion="1.1190476">
+        <state line="97" column="1" selection-start="1317" selection-end="1317" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_11.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="7" selection-start="1981" selection-end="1981" vertical-scroll-proportion="0.78571427">
           <folding />
         </state>
       </provider>
