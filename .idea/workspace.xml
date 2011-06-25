@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_8.haml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/haml.js" afterPath="$PROJECT_DIR$/js/haml.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_7.haml" afterPath="$PROJECT_DIR$/pages/page_7.haml" />
     </list>
     <ignored path="backbone.iws" />
@@ -65,15 +62,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="haml.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/haml.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="0" selection-start="2044" selection-end="2044" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -137,19 +125,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_7.haml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="page_7.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="61" selection-start="1510" selection-end="1510" vertical-scroll-proportion="0.0">
+            <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.6904762">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_8.haml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="page_8.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_8.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="18" selection-start="1344" selection-end="1344" vertical-scroll-proportion="1.3333334">
+            <state line="56" column="18" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="todos.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="0" selection-start="1005" selection-end="2094" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -183,8 +180,8 @@
         <option value="$PROJECT_DIR$/css/presentation.css" />
         <option value="$PROJECT_DIR$/js/haml.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/pages/page_7.haml" />
         <option value="$PROJECT_DIR$/pages/page_8.haml" />
+        <option value="$PROJECT_DIR$/pages/page_7.haml" />
       </list>
     </option>
   </component>
@@ -261,6 +258,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="todos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="backbone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="backbone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="todos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="todos_files" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -534,7 +549,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated haml" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed page 7" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -549,6 +564,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="added caching of haml functions" />
     <MESSAGE value="updated haml" />
+    <MESSAGE value="completed page 7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -622,16 +638,23 @@
         <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
+    <entry file="file://$PROJECT_DIR$/pages/page_8.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="61" selection-start="1510" selection-end="1510" vertical-scroll-proportion="0.0">
+        <state line="56" column="18" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_8.haml">
+    <entry file="file://$PROJECT_DIR$/todos/todos_files/todos.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="18" selection-start="1344" selection-end="1344" vertical-scroll-proportion="1.3333334">
+        <state line="37" column="0" selection-start="1005" selection-end="2094" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_7.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="0" selection-start="1584" selection-end="1584" vertical-scroll-proportion="0.6904762">
           <folding />
         </state>
       </provider>
