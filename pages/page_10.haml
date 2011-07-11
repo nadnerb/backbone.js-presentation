@@ -18,6 +18,7 @@
   !      a_list: [{label: 'listitem1'}, {label: 'listitem2'}]
   !    }
   !  };
+%br
 %pre
   &  {{#a_object}}
   &    <h1>{{title}}</h1>
@@ -74,10 +75,10 @@
   &    </li>
   &    {{/each}}
   &  </ul>
-  &  <input type="hidden" id="price" name="price" value='{{= productOptions[0].get("price")
-  &  }}'>
-  &  <input type="hidden" id="name" name="name" value='{{= productOptions[0].get("name")
-  &  }}'>
+  &  <input type="hidden" id="price" name="price" value='{{=
+  &    productOptions[0].get("price") }}'>
+  &  <input type="hidden" id="name" name="name" value='{{=
+  &    productOptions[0].get("name") }}'>
   &  <input type="hidden" id="description" name="description"
   &    value='{{= productOptions[0].get("description") }}'>
   &</form>
@@ -91,13 +92,16 @@
   &  %ul
   &    - _(productOptions).each(function (productOption) {
   &      %li.duration-option
-  &        %input(type="radio" name='duration'){ value: productOption.get("duration"),
+  &        %input(type="radio" name='duration'){ value:
+  &             productOption.get("duration"),
   &             id:['duration', productOption.get("duration")], checked: i === 0 }
-  &        %label.load{ for: 'duration-' + productOption.get("duration") }
+  &        %label.loud{ for: 'duration-' + productOption.get("duration") }
   &          = productOption.get("duration")
   &          Days
-  &  %input(type="hidden" id="price" name="price"){ value: productOptions[0].get("price")}
-  &  %input(type="hidden" id="name" name="name"){value: productOptions[0].get("name")}
+  &  %input(type="hidden" id="price" name="price"){
+  &     value: productOptions[0].get("price") }
+  &  %input(type="hidden" id="name" name="name"){
+  &     value: productOptions[0].get("name") }
   &  %input(type="hidden" id="description" name="description"){
   &      value: productOptions[0].get("description")}
 </script>
