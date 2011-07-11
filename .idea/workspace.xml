@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pages/page_12.haml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/presentation.css" afterPath="$PROJECT_DIR$/css/presentation.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_4.haml" afterPath="$PROJECT_DIR$/pages/page_4.haml" />
     </list>
     <ignored path="backbone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -73,10 +71,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_12.haml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="page_12.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/page_12.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="9" selection-start="154" selection-end="154" vertical-scroll-proportion="0.11904762">
+            <state line="5" column="9" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,10 +143,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="presentation.css" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="presentation.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/css/presentation.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="67" selection-start="1386" selection-end="1386" vertical-scroll-proportion="0.0">
+            <state line="41" column="1" selection-start="569" selection-end="569" vertical-scroll-proportion="0.4047619">
               <folding />
             </state>
           </provider>
@@ -182,8 +180,8 @@
         <option value="$PROJECT_DIR$/pages/page_10.haml" />
         <option value="$PROJECT_DIR$/pages/page_11.haml" />
         <option value="$PROJECT_DIR$/pages/page_4.haml" />
-        <option value="$PROJECT_DIR$/css/presentation.css" />
         <option value="$PROJECT_DIR$/pages/page_12.haml" />
+        <option value="$PROJECT_DIR$/css/presentation.css" />
       </list>
     </option>
   </component>
@@ -502,7 +500,7 @@
     <frame x="-3" y="24" width="1926" height="1126" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925585" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925585" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.6707441" order="1" side_tool="false" content_ui="tabs" />
@@ -551,7 +549,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Page 11 done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Page 12 done" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -574,6 +572,7 @@
     <MESSAGE value="can navigate back by sequence" />
     <MESSAGE value="Page 10 done" />
     <MESSAGE value="Page 11 done" />
+    <MESSAGE value="Page 12 done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -679,16 +678,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/presentation.css">
+    <entry file="file://$PROJECT_DIR$/pages/page_12.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="67" selection-start="1386" selection-end="1386" vertical-scroll-proportion="0.0">
+        <state line="5" column="9" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_12.haml">
+    <entry file="file://$PROJECT_DIR$/css/presentation.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="9" selection-start="154" selection-end="154" vertical-scroll-proportion="0.11904762">
+        <state line="41" column="1" selection-start="569" selection-end="569" vertical-scroll-proportion="0.4047619">
           <folding />
         </state>
       </provider>
