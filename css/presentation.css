@@ -1,119 +1,123 @@
 body {
-    background-color: #2f4f4f;
-    min-width: 1024px;
-    min-height: 768px;
+  background-color: #2f4f4f;
+  min-width: 1024px;
+  min-height: 768px;
 }
 
 #main {
-    width: 1024px;
-    height: 768px;
-    border: 1px solid black;
-    margin: 0 auto;
-	overflow: hidden;
-    padding: 5px;
-    background-color: #708090;
+  width: 1024px;
+  height: 768px;
+  border: 1px solid black;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 5px;
+  background-color: #708090;
 }
 
 #navigation {
-    height: 45px;
+  height: 45px;
 }
 
 #header {
-    height: 106px;
-    border: 1px solid black;
-    background-color: #d3d3d3;
-    margin: 5px;
+  height: 106px;
+  border: 1px solid black;
+  background-color: #d3d3d3;
+  margin: 5px;
 }
 
 #progress {
-    float: left;
-    left: 5px;
-    position: relative;
-    top: 2px;
-    width: 777px;
+  float: left;
+  left: 5px;
+  position: relative;
+  top: 2px;
+  width: 777px;
 }
 
 #back-button {
-    float: left;
+  float: left;
 }
 
 #next-button {
-    float: right;
+  float: right;
 }
 
 #timerDiv {
-    width: 150px;
-    float: right;
-    height: 100%;
-    line-height: 40px;
-    font-size: xx-large;
-    text-align: center;
-    padding-top: 10px;
+  width: 150px;
+  float: right;
+  height: 100%;
+  line-height: 40px;
+  font-size: xx-large;
+  text-align: center;
+  padding-top: 10px;
 }
 
 #title {
-    text-align: center;
-    font-size: xx-large;
-    float: left;
-    width: 712px;
-    position: relative;
-    left: 150px;
-    height: 100%;
-    line-height: 100px;
+  text-align: center;
+  font-size: xx-large;
+  float: left;
+  width: 712px;
+  position: relative;
+  left: 150px;
+  height: 100%;
+  line-height: 100px;
 }
 
 .spacer {
-    height: 10px;
+  height: 10px;
 }
 
 .big-spacer {
-    height: 50px;
+  height: 50px;
 }
 
 #main-content {
-    text-align: center;
-    height: 598px;
-    padding:  5px;
-}
-
-#main-content {
-    font-size: x-large;
+  text-align: center;
+  height: 598px;
+  margin: 6px;
+  font-size: x-large;
+  overflow: hidden;
+  width: 1012px;
 }
 
 #main-content em {
-    font-weight: bolder;
+  font-weight: bolder;
+  color: red;
 }
 
 #main-content ul {
-    text-align: left;
+  text-align: left;
 }
 
 .content-panel {
-    border: 1px solid black;
-    height: 95%;
-    padding:  5px;
-    background-color: #d3d3d3;
+  border: 1px solid black;
+  height: 95%;
+  padding: 5px;
+  background-color: #d3d3d3;
+}
+
+#page-1-content {
+  font-size: xx-large;
 }
 
 #page-2-content {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
-#page-3-content li, #page-4-content li, #page-6-content li, #page-7-content li, #page-10-content li  {
-    font-size: xx-large;
-    padding-top: 10px;
+#page-3-content li, #page-4-content li, #page-6-content li, #page-7-content li, #page-10-content li {
+  font-size: xx-large;
+  padding-top: 10px;
 }
 
 #page-5-content iframe {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #page-7-content, #page-8-content, #page-9-content, #page-10-content, #page-11-content {
-    text-align: left;
+  text-align: left;
 }
 
 #page-10-content h4 {
-    text-align: center;
-    margin-top: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
