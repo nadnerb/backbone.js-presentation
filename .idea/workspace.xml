@@ -15,7 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1e523ef-c39f-43cf-b577-fa6fcccd3484" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/presentation.css" afterPath="$PROJECT_DIR$/css/presentation.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/page_3.haml" afterPath="$PROJECT_DIR$/pages/page_3.haml" />
     </list>
     <ignored path="backbone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -128,10 +128,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_3.haml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="page_3.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/page_3.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="22" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0">
+            <state line="16" column="85" selection-start="562" selection-end="562" vertical-scroll-proportion="0.24725275">
               <folding />
             </state>
           </provider>
@@ -155,10 +155,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="presentation.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="presentation.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/presentation.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="11" selection-start="971" selection-end="971" vertical-scroll-proportion="0.38186812">
+            <state line="75" column="11" selection-start="971" selection-end="971" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,7 +181,6 @@
         <option value="$PROJECT_DIR$/css/sh_style.css" />
         <option value="$PROJECT_DIR$/js/haml.js" />
         <option value="$PROJECT_DIR$/pages/page_1.haml" />
-        <option value="$PROJECT_DIR$/pages/page_3.haml" />
         <option value="$PROJECT_DIR$/pages/page_5.haml" />
         <option value="$PROJECT_DIR$/pages/page_6.haml" />
         <option value="$PROJECT_DIR$/pages/page_7.haml" />
@@ -194,6 +193,7 @@
         <option value="$PROJECT_DIR$/pages/page_4.haml" />
         <option value="$PROJECT_DIR$/pages/page_12.haml" />
         <option value="$PROJECT_DIR$/css/presentation.css" />
+        <option value="$PROJECT_DIR$/pages/page_3.haml" />
       </list>
     </option>
   </component>
@@ -656,11 +656,6 @@
         <state line="66" column="9" selection-start="2689" selection-end="2689" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/page_3.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="22" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/page_1.haml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="67" column="20" selection-start="1943" selection-end="1943" vertical-scroll-proportion="0.0" />
@@ -673,7 +668,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/css/presentation.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="11" selection-start="971" selection-end="971" vertical-scroll-proportion="0.38186812">
+        <state line="75" column="11" selection-start="971" selection-end="971" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/page_3.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="85" selection-start="562" selection-end="562" vertical-scroll-proportion="0.24725275">
           <folding />
         </state>
       </provider>
