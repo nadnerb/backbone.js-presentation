@@ -11,7 +11,7 @@ window.haml = {
     var outputBuffer = new haml.Buffer();
     var elementStack = [];
 
-    var result = '  var html = "";\n  var result = "";\n  with (context) {\n';
+    var result = '  var html = [];\n  var hashFunction = null;\n  with (context) {\n';
 
     // HAML -> WS* (
     //          TEMPLATELINE
@@ -46,7 +46,7 @@ window.haml = {
     outputBuffer.flush();
     result += outputBuffer.output();
 
-    result += '  }\n  return html;\n';
+    result += '  }\n  return html.join("");\n';
 
     var fn = null;
 
@@ -121,7 +121,7 @@ window.haml = {
       haml.closeElements(indent, elementStack, outputBuffer, tokeniser);
     }
     if (tokeniser.token.equal || tokeniser.token.escapeHtml || tokeniser.token.unescapeHtml) {
-      var escapeHtml =  tokeniser.token.escapeHtml || tokeniser.token.equal;
+      var escapeHtml = tokeniser.token.escapeHtml || tokeniser.token.equal;
       var currentParsePoint = tokeniser.currentParsePoint();
       var expression = tokeniser.skipToEOLorEOF();
       var indentText = haml.indentText(indent);
@@ -136,9 +136,9 @@ window.haml = {
       outputBuffer.appendToOutputBuffer(indentText + '    var value = (function() { with(context) { ' +
               expression + '; }})();\n');
       if (escapeHtml) {
-        outputBuffer.appendToOutputBuffer(indentText + '    html += _(String(value)).escapeHTML() + "\\n";\n');
+        outputBuffer.appendToOutputBuffer(indentText + '    html.push(_(String(value)).escapeHTML() + "\\n");\n');
       } else {
-        outputBuffer.appendToOutputBuffer(indentText + '    html += String(value) + "\\n";\n');
+        outputBuffer.appendToOutputBuffer(indentText + '    html.push(String(value) + "\\n");\n');
       }
       outputBuffer.appendToOutputBuffer(indentText + '} catch (e) {\n');
       outputBuffer.appendToOutputBuffer(indentText + '  throw new Error(haml.templateError(' +
@@ -158,9 +158,9 @@ window.haml = {
       outputBuffer.appendToOutputBuffer(line);
       outputBuffer.appendToOutputBuffer('\n');
 
-      if (line.match(/function\s\((,?\s*\w+)*\)\s*{\s*$/)) {
+      if (line.match(/function\s\((,?\s*\w+)*\)\s*\{\s*$/)) {
         elementStack[indent] = { fnBlock: true };
-      } else if (line.match(/{\s*$/)) {
+      } else if (line.match(/\{\s*$/)) {
         elementStack[indent] = { block: true };
       }
     }
@@ -190,7 +190,7 @@ window.haml = {
         closeTag = haml.isSelfClosingTag(ident) && !haml.tagHasContents(indent, tokeniser);
       }
       haml.openElement(currentParsePoint, indent, ident, id, classes, attrList, attributesHash, elementStack,
-        outputBuffer, closeTag);
+              outputBuffer, closeTag);
     } else if (!haml.isEolOrEof(tokeniser) && !tokeniser.token.ws) {
       tokeniser.pushBackToken();
     }
@@ -200,7 +200,7 @@ window.haml = {
 
     if (selfClosingTag && contents.length > 0) {
       throw haml.templateError(currentParsePoint.lineNumber, currentParsePoint.characterNumber,
-        currentParsePoint.currentLine, "A self-closing tag can not have any contents");
+              currentParsePoint.currentLine, "A self-closing tag can not have any contents");
     }
     else if (contents.length > 0) {
       if (contents.match(/^\\%/)) {
@@ -292,12 +292,12 @@ window.haml = {
       } else if (elementStack[indent].htmlConditionalComment) {
         outputBuffer.append(haml.indentText(indent) + '<![endif]-->\\n');
       } else if (elementStack[indent].block) {
-        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*}/g)) {
+        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*\}/g)) {
           outputBuffer.flush();
           outputBuffer.appendToOutputBuffer(haml.indentText(indent) + '}\n');
         }
       } else if (elementStack[indent].fnBlock) {
-        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*}/g)) {
+        if (!tokeniser.token.minus || !tokeniser.matchToken(/\s*\}/g)) {
           outputBuffer.flush();
           outputBuffer.appendToOutputBuffer(haml.indentText(indent) + '});\n');
         }
@@ -314,7 +314,16 @@ window.haml = {
     }
   },
 
-  openElement: function (currentParsePoint, indent, ident, id, classes, attributeList, attributeHash, elementStack, outputBuffer, selfClosingTag) {
+  openElement: function (currentParsePoint,
+                         indent,
+                         ident,
+                         id,
+                         classes,
+                         attributeList,
+                         attributeHash,
+                         elementStack,
+                         outputBuffer,
+                         selfClosingTag) {
     var element = ident;
     if (element.length === 0) {
       element = 'div';
@@ -324,16 +333,18 @@ window.haml = {
     if (attributeHash.length > 0) {
       outputBuffer.flush();
 
-      attributeHash = attributeHash.replace('class:', '"class":');
-      outputBuffer.appendToOutputBuffer('    var hashFunction = function (context) { with(context) { return ' + attributeHash + '; }};\n');
+      attributeHash = this.replaceReservedWordsInHash(attributeHash);
+      outputBuffer.appendToOutputBuffer('    hashFunction = function (context) { with(context) { return ' +
+              attributeHash +
+              '; }};\n');
 
 
-      outputBuffer.appendToOutputBuffer('    html += haml.generateElementAttributes(context, "' +
+      outputBuffer.appendToOutputBuffer('    html.push(haml.generateElementAttributes(context, "' +
               id + '", ["' +
               classes.join('","') + '"], ' +
               JSON.stringify(attributeList) + ', hashFunction, ' +
               currentParsePoint.lineNumber + ', ' + currentParsePoint.characterNumber + ', "' +
-              haml.escapeJs(currentParsePoint.currentLine) + '");\n');
+              haml.escapeJs(currentParsePoint.currentLine) + '"));\n');
     } else {
       outputBuffer.append(haml.generateElementAttributes(null, id, classes, attributeList, null,
               currentParsePoint.lineNumber, currentParsePoint.characterNumber, currentParsePoint.currentLine));
@@ -344,6 +355,17 @@ window.haml = {
       outputBuffer.append(">\\n");
       elementStack[indent] = { tag: element };
     }
+  },
+
+  replaceReservedWordsInHash: function (hash) {
+    var resultHash;
+
+    resultHash = hash;
+    _(['class', 'for']).each(function (reservedWord) {
+      resultHash = resultHash.replace(reservedWord + ':', '"' + reservedWord + '":');
+    });
+
+    return resultHash;
   },
 
   escapeJs: function (jsStr) {
@@ -386,7 +408,7 @@ window.haml = {
     }
     return attributes;
   },
-  
+
   isSelfClosingTag: function (tag) {
     return _(['meta', 'img', 'link', 'script', 'br', 'hr']).contains(tag);
   },
@@ -400,8 +422,14 @@ window.haml = {
     }
   },
 
-  generateElementAttributes: function (context, id, classes, attrList, attrFunction, lineNumber, characterNumber,
-                                           currentLine) {
+  generateElementAttributes: function (context,
+                                       id,
+                                       classes,
+                                       attrList,
+                                       attrFunction,
+                                       lineNumber,
+                                       characterNumber,
+                                       currentLine) {
     var attributes = {};
 
     attributes = haml.combineAttributes(attributes, 'id', id);
@@ -568,7 +596,7 @@ window.haml = {
 
       if (isNaN(this.bufferIndex)) {
         throw haml.templateError(this.lineNumber, this.characterNumber, this.currentLine,
-          "An internal parser error has occurred in the HAML parser");
+                "An internal parser error has occurred in the HAML parser");
       }
 
       this.prevToken = this.token;
@@ -762,7 +790,7 @@ window.haml = {
       if (numberOfTokens > 0) {
         var currentToken = this.token;
         var prevToken = this.prevToken;
-        var currentLine =  this.currentLine;
+        var currentLine = this.currentLine;
         var lineNumber = this.lineNumber;
         var characterNumber = this.characterNumber;
         var bufferIndex = this.bufferIndex;
@@ -867,13 +895,14 @@ window.haml = {
 
     this.appendToOutputBuffer = function (str) {
       if (str && str.length > 0) {
+        this.flush();
         this.outputBuffer += str;
       }
     };
 
     this.flush = function () {
       if (this.buffer && this.buffer.length > 0) {
-        this.outputBuffer += '    html += "' + haml.escapeJs(this.buffer) + '";\n';
+        this.outputBuffer += '    html.push("' + haml.escapeJs(this.buffer) + '");\n';
       }
       this.buffer = '';
     };
